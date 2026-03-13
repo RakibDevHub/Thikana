@@ -1,64 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ThemeProvider } from "./components/context/Theme";
+import Header from "./components/layout/Header";
+import Footer from "./components/layout/Footer";
+import Home from "./pages/Home";
+import Properties from "./pages/Properties";
+import PropertyDetail from "./pages/PropertyDetail";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Testimonials from "./pages/Testimonials";
 
 function App() {
-  const [properties, setProperties] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Fetch from your backend
-    fetch('http://localhost:5000/api/properties')
-      .then(res => res.json())
-      .then(data => {
-        setProperties(data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error('Error fetching:', err);
-        setLoading(false);
-      });
-  }, []);
-
-  const formatPrice = (price) => {
-    return '$' + price.toLocaleString();
-  };
-
-  if (loading) return <div className="loading">Loading properties...</div>;
-
   return (
-    <div className="app">
-      <header className="header">
-        <h1>🏠 Thikana Real Estate</h1>
-        <nav>
-          <a href="/">Home</a>
-          <a href="/properties">Properties</a>
-          <a href="/contact">Contact</a>
-        </nav>
-      </header>
-
-      <main>
-        <section className="hero">
-          <h2>Find Your Dream Home</h2>
-          <p>Discover the perfect property for you and your family</p>
-        </section>
-
-        <section className="properties">
-          <h2>Featured Properties</h2>
-          <div className="property-grid">
-            {properties.map(property => (
-              <div key={property.id} className="property-card">
-                <img src={property.image} alt={property.title} />
-                <h3>{property.title}</h3>
-                <p className="price">{formatPrice(property.price)}</p>
-                <p>📍 {property.city}, {property.state}</p>
-                <p>🛏️ {property.bedrooms} beds • 🛁 {property.bathrooms} baths • 📐 {property.area} sqft</p>
-                <button>View Details</button>
-              </div>
-            ))}
-          </div>
-        </section>
-      </main>
-    </div>
+    <ThemeProvider>
+      <Router>
+        <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+          <Header />
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/properties" element={<Properties />} />
+              <Route path="/property/:id" element={<PropertyDetail />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/testimonials" element={<Testimonials />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </Router>
+    </ThemeProvider>
   );
 }
 
