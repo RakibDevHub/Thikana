@@ -1,33 +1,69 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { ThemeProvider } from "./components/context/Theme";
-import Header from "./components/layout/Header";
-import Footer from "./components/layout/Footer";
-import Home from "./pages/Home";
-import Properties from "./pages/Properties";
-import PropertyDetail from "./pages/PropertyDetail";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Testimonials from "./pages/Testimonials";
+
+// Layouts
+import PublicLayout from "./layout/PublicLayout";
+import AdminLayout from "./layout/AdminLayout";
+
+// Public Pages
+import Home from "./pages/public/Home";
+import Properties from "./pages/public/Properties";
+import PropertyDetail from "./pages/public/PropertyDetail";
+import About from "./pages/public/About";
+import Contact from "./pages/public/Contact";
+import Testimonials from "./pages/public/Testimonials";
+
+// Admin Pages
+import AdminLogin from "./pages/admin/Login";
+import AdminDashboard from "./pages/admin/Dashboard";
+import AdminProperties from "./pages/admin/Properties";
+import AdminTestimonials from "./pages/admin/Testimonials";
+import AdminMessages from "./pages/admin/Messages";
+
+const ProtectedRoute = ({ children }) => {
+  const isAuthenticated = localStorage.getItem("adminToken");
+  return isAuthenticated ? children : <Navigate to="/admin/login" replace />;
+};
 
 function App() {
   return (
     <ThemeProvider>
       <Router>
-        <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-          <Header />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/properties" element={<Properties />} />
-              <Route path="/property/:id" element={<PropertyDetail />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/testimonials" element={<Testimonials />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
+        <Routes>
+          {/* Public Routes */}
+          <Route element={<PublicLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/properties" element={<Properties />} />
+            <Route path="/property/:id" element={<PropertyDetail />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/testimonials" element={<Testimonials />} />
+          </Route>
+
+          {/* Admin Login */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+
+          {/* Protected Admin Routes */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<AdminDashboard />} />
+            <Route path="properties" element={<AdminProperties />} />
+            <Route path="testimonials" element={<AdminTestimonials />} />
+            <Route path="messages" element={<AdminMessages />} />
+          </Route>
+        </Routes>
       </Router>
     </ThemeProvider>
   );
