@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Build outputs
+dist/
+build/
+frontend/dist
+frontend/build
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Backend uploads (if any)
+backend/uploads/
+uploads/
+
+# Misc
+*.bak
