@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FiMapPin, FiMaximize, FiHeart } from "react-icons/fi";
+import { FiMapPin, FiMaximize } from "react-icons/fi";
 import { FaBath, FaBed } from "react-icons/fa";
 
 const PropertyCard = ({ property }) => {
@@ -27,11 +27,6 @@ const PropertyCard = ({ property }) => {
           <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
           Featured
         </div>
-
-        {/* Wishlist Button */}
-        <button className="absolute top-4 left-4 w-10 h-10 bg-white/90 dark:bg-gray-800/90 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:text-red-500 duration-300 backdrop-blur-sm opacity-0 group-hover:opacity-100 transform -translate-x-5 group-hover:translate-x-0 transition-all">
-          <FiHeart className="text-lg" />
-        </button>
       </div>
 
       {/* Content */}

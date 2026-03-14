@@ -159,7 +159,7 @@ const Footer = () => {
       {/* Glow effect for the border */}
       <div className="absolute top-0 left-1/4 right-1/4 h-4 bg-blue-500/20 blur-xl"></div>
 
-      <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Main Footer Content */}
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-8">
           {/* Brand Section */}

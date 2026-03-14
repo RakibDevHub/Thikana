@@ -242,7 +242,7 @@ const Home = () => {
           ></div>
         </div>
 
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col lg:flex-row items-center gap-16">
             {/* Left Content */}
             <div className="flex-1 text-center lg:text-left space-y-8">
@@ -420,7 +420,7 @@ const Home = () => {
 
       {/* Featured Properties */}
       <section id="features" className="py-24 lg:py-32 bg-gray-50 dark:bg-gray-900">
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             badge="✨ Featured Listings"
             title="Handpicked Properties"
@@ -464,7 +464,7 @@ const Home = () => {
           ></div>
         </div>
 
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <SectionHeading
             badge="💎 Why Choose Us"
             title="The Thikana Advantage"
@@ -504,7 +504,7 @@ const Home = () => {
 
       {/* Service */}
       <section id="services" className="py-24 lg:py-32 bg-white dark:bg-gray-800">
-        <div className="container max-w-7xl mx-auto px-4">
+        <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             badge="⚡ Our Expertise"
             title="Real Estate Services"
@@ -534,7 +534,7 @@ const Home = () => {
 
       {/* How It Works */}
       <section id="how-it-works" className="py-24 lg:py-32 bg-gray-50 dark:bg-gray-900">
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             badge="🔄 Simple Process"
             title="How It Works"
@@ -573,7 +573,7 @@ const Home = () => {
 
       {/* Testimonials */}
       <section id="testimonials" className="py-24 lg:py-32 bg-white dark:bg-gray-800">
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             badge="💬 Client Stories"
             title="What Our Clients Say"
@@ -606,7 +606,7 @@ const Home = () => {
 
       {/* FAQ Section */}
       <section id="faq" className="py-24 lg:py-32 bg-gray-50 dark:bg-gray-900">
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             badge="❓ Got Questions?"
             title="Frequently Asked Questions"
@@ -664,7 +664,7 @@ const Home = () => {
           />
         </div>
 
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+        <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6 leading-tight">
             Ready to Find Your{" "}
             <span className="text-transparent bg-clip-text bg-linear-to-r from-yellow-300 to-yellow-400">

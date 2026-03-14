@@ -166,7 +166,7 @@ const Properties = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header Section */}
       <section className="bg-linear-to-r from-blue-600 to-blue-800 text-white py-16">
-        <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Properties</h1>
           <p className="text-xl text-blue-100 max-w-2xl">
             Discover your perfect property from our extensive collection
@@ -174,7 +174,7 @@ const Properties = () => {
         </div>
       </section>
 
-      <div className="container max-w-7xl mx-auto px-4 py-12">
+      <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Mobile Filter Toggle */}
         <button
           onClick={() => setShowFilters(!showFilters)}
@@ -189,7 +189,7 @@ const Properties = () => {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters Sidebar */}
           <div className={`
-            lg:w-1/4 bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 h-fit
+            lg:w-1/4 bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 h-fit sticky top-28 
             ${showFilters ? 'block' : 'hidden lg:block'}
           `}>
             {/* filter sidebar content */}
@@ -464,8 +464,6 @@ const Properties = () => {
             )}
           </div>
         </div>
-
-        {/* Additional Sections for Footer Links */}
         
         {/* Property Categories Section */}
         <section id="categories" className="mt-24 pt-16 border-t border-gray-200 dark:border-gray-700">
