@@ -9,64 +9,138 @@ const Footer = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // HOME LINKS
   const homeLinks = [
-    { id: "hero", label: "Hero Section" },
-    { id: "features", label: "Features Properties" },
-    { id: "why-choose-us", label: "Why Choose Us" },
-    { id: "testimonials", label: "Testimonials" },
-    { id: "faq", label: "FAQ's" },
+    { id: "hero", label: "Hero Section", sectionTitle: "Home" },
+    { id: "features", label: "Featured Properties", sectionTitle: "Home" },
+    { id: "why-choose-us", label: "Why Choose Us", sectionTitle: "Home" },
+    { id: "services", label: "Our Services", sectionTitle: "Home" },
+    { id: "how-it-works", label: "How It Works", sectionTitle: "Home" },
+    { id: "testimonials", label: "Testimonials", sectionTitle: "Home" },
+    { id: "faq", label: "FAQ's", sectionTitle: "Home" },
   ];
 
-  const handleSectionClick = (e, sectionId) => {
+  // ABOUT LINKS
+  const aboutLinks = [
+    {
+      id: "story",
+      label: "Our Story",
+      path: "/about#story",
+      sectionTitle: "About Us",
+    },
+    {
+      id: "team",
+      label: "Our Team",
+      path: "/about#team",
+      sectionTitle: "About Us",
+    },
+    {
+      id: "clients",
+      label: "Our Clients",
+      path: "/about#clients",
+      sectionTitle: "About Us",
+    },
+    {
+      id: "offices",
+      label: "Our Offices",
+      path: "/about#offices",
+      sectionTitle: "About Us",
+    },
+  ];
+
+  // PROPERTIES LINKS
+  const propertiesLinks = [
+    {
+      id: "categories",
+      label: "Property Categories",
+      path: "/properties#categories",
+      sectionTitle: "Properties",
+    },
+    {
+      id: "portfolio",
+      label: "Our Portfolio",
+      path: "/properties#portfolio",
+      sectionTitle: "Properties",
+    },
+    {
+      id: "works",
+      label: "Recent Works",
+      path: "/properties#works",
+      sectionTitle: "Properties",
+    },
+    {
+      id: "management",
+      label: "Property Management",
+      path: "/properties#management",
+      sectionTitle: "Properties",
+    },
+  ];
+
+  // CONTACT LINKS
+  const contactLinks = [
+    {
+      id: "form",
+      label: "Contact Form",
+      path: "/contact#form",
+      sectionTitle: "Contact",
+    },
+    {
+      id: "offices",
+      label: "Our Offices",
+      path: "/contact#offices",
+      sectionTitle: "Contact",
+    },
+    {
+      id: "support",
+      label: "24/7 Support",
+      path: "/contact#support",
+      sectionTitle: "Contact",
+    },
+    { id: "faq", label: "FAQ's", path: "/faq", sectionTitle: "Contact" },
+  ];
+
+  const handleSectionClick = (e, link) => {
     e.preventDefault();
 
-    if (location.pathname !== "/") {
-      // Navigate to home page first
-      navigate("/");
-      // Wait for navigation and render, then scroll
+    // Determine which page to navigate to based on section title
+    const getPageFromTitle = (title) => {
+      switch (title) {
+        case "About Us":
+          return "/about";
+        case "Properties":
+          return "/properties";
+        case "Contact":
+          return "/contact";
+        default:
+          return "/";
+      }
+    };
+
+    const targetPage = getPageFromTitle(link.sectionTitle);
+    const sectionId = link.id || link.path?.split("#")[1]; // Extract hash if exists
+
+    if (location.pathname !== targetPage) {
+      // Navigate to the correct page
+      navigate(targetPage);
+      // Wait for navigation, then scroll to section
       setTimeout(() => {
-        scrollToSection(sectionId);
+        if (sectionId) {
+          scrollToSection(sectionId);
+        }
       }, 500);
     } else {
-      // Already on home page, scroll immediately
-      scrollToSection(sectionId);
+      // Already on correct page, scroll immediately
+      if (sectionId) {
+        scrollToSection(sectionId);
+      }
     }
   };
 
-  const aboutLinks = [
-    { path: "/about#story", label: "Our Story" },
-    { path: "/about#team", label: "Our Team" },
-    { path: "/about#offices", label: "Our Offices" },
-    { path: "/about#clients", label: "Our Clients" },
-  ];
-
-  const propertiesLinks = [
-    { path: "/properties#categories", label: "Categories" },
-    { path: "/properties#portfolio", label: "Portfolio" },
-    { path: "/properties#works", label: "Our Works" },
-    { path: "/properties#management", label: "Property Management" },
-  ];
-
-  const servicesLinks = [
-    { path: "/services#valuation", label: "Valuation Mastery" },
-    { path: "/services#marketing", label: "Strategic Marketing" },
-    { path: "/services#negotiation", label: "Negotiation Wizardry" },
-    { path: "/services#closing", label: "Closing Success" },
-  ];
-
-  const contactLinks = [
-    { path: "/contact#form", label: "Contact Form" },
-    { path: "/contact#offices", label: "Our Offices" },
-    { path: "/services#marketing", label: "Strategic Marketing" },
-    { path: "/properties#management", label: "Property Management" },
-  ];
-
   const footerSections = [
     { title: "Home", links: homeLinks },
-    { title: "About Us", links: aboutLinks },
     { title: "Properties", links: propertiesLinks },
-    { title: "Services", links: servicesLinks },
-    { title: "Contact Us", links: contactLinks },
+    { title: "About Us", links: aboutLinks },
+    { title: "Contact", links: contactLinks },
   ];
 
   return (
@@ -85,11 +159,12 @@ const Footer = () => {
       {/* Glow effect for the border */}
       <div className="absolute top-0 left-1/4 right-1/4 h-4 bg-blue-500/20 blur-xl"></div>
 
-      <div className="container max-w-7xl mx-auto px-4 relative z-10">
+      <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Main Footer Content */}
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-8">
           {/* Brand Section */}
-          <div className="lg:w-1/4 space-y-6">
+          {/* <div className="lg:w-1/4 space-y-6"> */}
+          <div className="lg:w-1/2 space-y-6">
             {/* Logo */}
             <Link to="/" className="inline-block group">
               <div className="flex flex-col">
@@ -145,34 +220,29 @@ const Footer = () => {
           </div>
 
           {/* Links Sections */}
-          <div className="lg:w-3/4">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+          <div className="w-full">
+            <div className="flex flex-row flex-wrap justify-between gap-8">
               {footerSections.map((section) => (
-                <div key={section.title}>
-                  <h4 className="text-white font-semibold mb-4 text-base relative inline-block">
+                <div key={section.title} className="w-max">
+                  <h4 className="text-white font-semibold mb-4 ml-4 text-base relative inline-block">
                     {section.title}
                     <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-blue-500 rounded-full"></span>
                   </h4>
                   <ul className="space-y-2">
                     {section.links.map((link) => (
                       <li key={link.id || link.path}>
-                        {link.id ? (
-                          <button
-                            onClick={(e) => handleSectionClick(e, link.id)}
-                            className="text-gray-400 hover:text-white transition-all duration-300 text-sm block py-1 hover:translate-x-1 flex items-center gap-1 group/link w-full text-left"
-                          >
-                            <FiChevronRight className="text-blue-500 opacity-0 group-hover/link:opacity-100 transition-all text-xs" />
-                            {link.label}
-                          </button>
-                        ) : (
-                          <Link
-                            to={link.path}
-                            className="text-gray-400 hover:text-white transition-all duration-300 text-sm block py-1 hover:translate-x-1 flex items-center gap-1 group/link"
-                          >
-                            <FiChevronRight className="text-blue-500 opacity-0 group-hover/link:opacity-100 transition-all text-xs" />
-                            {link.label}
-                          </Link>
-                        )}
+                        <button
+                          onClick={(e) =>
+                            handleSectionClick(e, {
+                              ...link,
+                              sectionTitle: section.title,
+                            })
+                          }
+                          className="text-gray-400 hover:text-white transition-all duration-300 text-sm py-1 hover:translate-x-1 flex items-center gap-1 group/link w-full text-left"
+                        >
+                          <FiChevronRight className="text-blue-500 opacity-0 group-hover/link:opacity-100 transition-all text-xs" />
+                          {link.label}
+                        </button>
                       </li>
                     ))}
                   </ul>

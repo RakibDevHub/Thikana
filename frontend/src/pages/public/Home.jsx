@@ -8,15 +8,16 @@ import LoadingSpinner from "../../components/common/LoadingSpinner";
 import {
   FiSearch,
   FiHome,
-  FiUsers,
   FiAward,
   FiMapPin,
   FiArrowRight,
   FiStar,
-  FiTrendingUp,
   FiShield,
   FiClock,
   FiCheckCircle,
+  FiDollarSign,
+  FiTrendingUp,
+  FiUsers,
   FiFileText,
 } from "react-icons/fi";
 
@@ -40,6 +41,37 @@ const Home = () => {
         setLoading(false);
       });
   }, []);
+
+  const services = [
+    {
+      icon: <FiDollarSign className="text-3xl" />,
+      title: "Valuation Mastery",
+      description:
+        "Accurate property valuations using market data and expert analysis to ensure you get the best price.",
+      color: "from-blue-400 to-blue-500",
+    },
+    {
+      icon: <FiTrendingUp className="text-3xl" />,
+      title: "Strategic Marketing",
+      description:
+        "Multi-channel marketing campaigns that reach the right buyers through digital and traditional platforms.",
+      color: "from-blue-500 to-blue-600",
+    },
+    {
+      icon: <FiUsers className="text-3xl" />,
+      title: "Negotiation Wizardry",
+      description:
+        "Skilled negotiation to get you the best deal, whether you're buying or selling your property.",
+      color: "from-blue-600 to-blue-700",
+    },
+    {
+      icon: <FiFileText className="text-3xl" />,
+      title: "Closing Success",
+      description:
+        "Hassle-free closing process with expert guidance through all paperwork and legal requirements.",
+      color: "from-blue-700 to-blue-800",
+    },
+  ];
 
   // Features data
   const features = [
@@ -191,10 +223,7 @@ const Home = () => {
   return (
     <div className="overflow-hidden">
       {/* Hero Section */}
-      <section
-        id="hero"
-        className="relative min-h-screen flex items-center bg-linear-to-br from-blue-900 via-blue-800 to-blue-900 dark:from-blue-950 dark:via-blue-900 dark:to-blue-950 text-white pt-10 lg:pt-12"
-      >
+      <section id="hero" className="relative min-h-screen flex items-center bg-linear-to-br from-blue-900 via-blue-800 to-blue-900 dark:from-blue-950 dark:via-blue-900 dark:to-blue-950 text-white pt-10 lg:pt-12">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
@@ -390,10 +419,7 @@ const Home = () => {
       </section>
 
       {/* Featured Properties */}
-      <section
-        id="features"
-        className="py-24 lg:py-32 bg-gray-50 dark:bg-gray-900"
-      >
+      <section id="features" className="py-24 lg:py-32 bg-gray-50 dark:bg-gray-900">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             badge="✨ Featured Listings"
@@ -426,7 +452,7 @@ const Home = () => {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-24 lg:py-32 bg-white dark:bg-gray-800 relative overflow-hidden">
+      <section id="why-choose-us" className="py-24 lg:py-32 bg-white dark:bg-gray-800 relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
           <div
@@ -476,8 +502,38 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Service */}
+      <section id="services" className="py-24 lg:py-32 bg-white dark:bg-gray-800">
+        <div className="container max-w-7xl mx-auto px-4">
+          <SectionHeading
+            badge="⚡ Our Expertise"
+            title="Real Estate Services"
+            description="Professional guidance every step of your property journey"
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {services.map((service, index) => (
+              <div
+                key={index}
+                className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-6 hover:shadow-xl transition-all group"
+              >
+                <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <span className="text-2xl text-blue-600">{service.icon}</span>
+                </div>
+                <h3 className="text-xl font-bold mb-2 dark:text-white">
+                  {service.title}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm">
+                  {service.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* How It Works */}
-      <section className="py-24 lg:py-32 bg-gray-50 dark:bg-gray-900">
+      <section id="how-it-works" className="py-24 lg:py-32 bg-gray-50 dark:bg-gray-900">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             badge="🔄 Simple Process"
@@ -516,10 +572,7 @@ const Home = () => {
       </section>
 
       {/* Testimonials */}
-      <section
-        id="testimonials"
-        className="py-24 lg:py-32 bg-white dark:bg-gray-800"
-      >
+      <section id="testimonials" className="py-24 lg:py-32 bg-white dark:bg-gray-800">
         <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             badge="💬 Client Stories"

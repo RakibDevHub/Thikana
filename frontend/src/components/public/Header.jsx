@@ -53,23 +53,18 @@ const Header = ({ headerHeight = 80 }) => {
       icon: <FiHome className="text-xl text-blue-600" />,
     },
     {
+      path: "/properties",
+      label: "Properties",
+      icon: <FiList className="text-xl text-blue-600" />,
+    },
+    {
       path: "/about",
       label: "About Us",
       icon: <FiInfo className="text-xl text-blue-600" />,
     },
     {
-      path: "/properties",
-      label: "Browse Properties",
-      icon: <FiList className="text-xl text-blue-600" />,
-    },
-    {
-      path: "/services",
-      label: "Our Services",
-      icon: <FiTool className="text-xl text-blue-600" />,
-    },
-    {
       path: "/contact",
-      label: "Contact Us",
+      label: "Contact",
       icon: <FiMail className="text-xl text-blue-600" />,
     },
   ];
