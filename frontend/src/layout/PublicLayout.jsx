@@ -3,22 +3,24 @@ import { Outlet } from 'react-router-dom';
 import Header from '../components/public/Header';
 import Footer from '../components/public/Footer';
 import BackToTop from '../components/common/BackToTop';
+import { setHeaderHeight } from '../utils/scrollUtils';
 
 const PublicLayout = () => {
-  const [headerHeight, setHeaderHeight] = useState(80);
+  const [headerHeight, setHeaderHeightState] = useState(80);
 
   useEffect(() => {
     const updateHeaderHeight = () => {
       const header = document.querySelector('header');
       if (header) {
-        setHeaderHeight(header.offsetHeight);
+        const height = header.offsetHeight;
+        setHeaderHeightState(height);
+        setHeaderHeight(height); 
       }
     };
 
     updateHeaderHeight();
     window.addEventListener('resize', updateHeaderHeight);
 
-    // Create a ResizeObserver to watch for header size changes
     const observer = new ResizeObserver(updateHeaderHeight);
     const header = document.querySelector('header');
     if (header) {

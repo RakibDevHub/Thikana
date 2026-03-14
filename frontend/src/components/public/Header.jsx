@@ -127,14 +127,14 @@ const Header = ({ headerHeight = 80 }) => {
                 )}
               </button>
 
-              {/* Mobile Menu Button - Only one button! */}
+              {/* Mobile Menu Button */}
               <button
-                className="lg:hidden p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors relative z-50"
+                className="lg:hidden p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group relative z-50"
                 onClick={toggleMenu}
                 aria-label="Toggle menu"
               >
                 {isMenuOpen ? (
-                  <FiX className="text-2xl text-gray-800 dark:text-white" />
+                  <FiX className="text-2xl text-gray-800 dark:text-white group-hover:rotate-180 transition-transform duration-500" />
                 ) : (
                   <IoMenu className="text-2xl text-gray-800 dark:text-white" />
                 )}

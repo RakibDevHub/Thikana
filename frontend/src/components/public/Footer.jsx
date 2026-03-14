@@ -1,19 +1,37 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 import { FiChevronRight } from "react-icons/fi";
+import { scrollToSection } from "../../utils/scrollUtils";
 import pattern from "../../assets/images/footer-pattern.svg";
 
 const Footer = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const homeLinks = [
-    { path: "/#hero", label: "Hero Section" },
-    { path: "/#features", label: "Features Properties" },
-    { path: "/#why-choose-us", label: "Why Choose Us" },
-    { path: "/#testimonials", label: "Testimonials" },
-    { path: "/#faq", label: "FAQ's" },
+    { id: "hero", label: "Hero Section" },
+    { id: "features", label: "Features Properties" },
+    { id: "why-choose-us", label: "Why Choose Us" },
+    { id: "testimonials", label: "Testimonials" },
+    { id: "faq", label: "FAQ's" },
   ];
+
+  const handleSectionClick = (e, sectionId) => {
+    e.preventDefault();
+
+    if (location.pathname !== "/") {
+      // Navigate to home page first
+      navigate("/");
+      // Wait for navigation and render, then scroll
+      setTimeout(() => {
+        scrollToSection(sectionId);
+      }, 500);
+    } else {
+      // Already on home page, scroll immediately
+      scrollToSection(sectionId);
+    }
+  };
 
   const aboutLinks = [
     { path: "/about#story", label: "Our Story" },
@@ -61,16 +79,16 @@ const Footer = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      {/* Enhanced Decorative Top Border - Now Visible */}
+      {/* Decorative Top Border */}
       <div className="absolute top-0 left-0 right-0 h-2 bg-linear-to-r from-blue-600 via-blue-400 to-blue-600 shadow-lg shadow-blue-500/50"></div>
-      
+
       {/* Glow effect for the border */}
       <div className="absolute top-0 left-1/4 right-1/4 h-4 bg-blue-500/20 blur-xl"></div>
 
       <div className="container max-w-7xl mx-auto px-4 relative z-10">
         {/* Main Footer Content */}
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-8">
-          {/* Brand Section - Takes less space */}
+          {/* Brand Section */}
           <div className="lg:w-1/4 space-y-6">
             {/* Logo */}
             <Link to="/" className="inline-block group">
@@ -126,7 +144,7 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Links Sections - Takes more space */}
+          {/* Links Sections */}
           <div className="lg:w-3/4">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
               {footerSections.map((section) => (
@@ -137,14 +155,24 @@ const Footer = () => {
                   </h4>
                   <ul className="space-y-2">
                     {section.links.map((link) => (
-                      <li key={link.path}>
-                        <Link
-                          to={link.path}
-                          className="text-gray-400 hover:text-white transition-all duration-300 text-sm block py-1 hover:translate-x-1 flex items-center gap-1 group/link"
-                        >
-                          <FiChevronRight className="text-blue-500 opacity-0 group-hover/link:opacity-100 transition-all text-xs" />
-                          {link.label}
-                        </Link>
+                      <li key={link.id || link.path}>
+                        {link.id ? (
+                          <button
+                            onClick={(e) => handleSectionClick(e, link.id)}
+                            className="text-gray-400 hover:text-white transition-all duration-300 text-sm block py-1 hover:translate-x-1 flex items-center gap-1 group/link w-full text-left"
+                          >
+                            <FiChevronRight className="text-blue-500 opacity-0 group-hover/link:opacity-100 transition-all text-xs" />
+                            {link.label}
+                          </button>
+                        ) : (
+                          <Link
+                            to={link.path}
+                            className="text-gray-400 hover:text-white transition-all duration-300 text-sm block py-1 hover:translate-x-1 flex items-center gap-1 group/link"
+                          >
+                            <FiChevronRight className="text-blue-500 opacity-0 group-hover/link:opacity-100 transition-all text-xs" />
+                            {link.label}
+                          </Link>
+                        )}
                       </li>
                     ))}
                   </ul>
@@ -188,7 +216,7 @@ const Footer = () => {
       {/* Decorative Elements */}
       <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-600/10 rounded-full blur-3xl"></div>
       <div className="absolute top-20 right-0 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl"></div>
-      
+
       {/* Small floating dots */}
       <div className="absolute bottom-20 left-10 w-2 h-2 bg-blue-400/30 rounded-full animate-pulse"></div>
       <div className="absolute top-40 right-20 w-3 h-3 bg-blue-500/20 rounded-full animate-pulse delay-700"></div>

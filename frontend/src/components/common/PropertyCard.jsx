@@ -29,7 +29,7 @@ const PropertyCard = ({ property }) => {
         </div>
 
         {/* Wishlist Button */}
-        <button className="absolute top-4 left-4 w-10 h-10 bg-white/90 dark:bg-gray-800/90 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:text-red-500 transition-colors duration-300 backdrop-blur-sm opacity-0 group-hover:opacity-100 transform translate-x-[-20px] group-hover:translate-x-0 transition-all">
+        <button className="absolute top-4 left-4 w-10 h-10 bg-white/90 dark:bg-gray-800/90 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:text-red-500 duration-300 backdrop-blur-sm opacity-0 group-hover:opacity-100 transform -translate-x-5 group-hover:translate-x-0 transition-all">
           <FiHeart className="text-lg" />
         </button>
       </div>
@@ -50,7 +50,7 @@ const PropertyCard = ({ property }) => {
 
         {/* Location */}
         <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 mb-4">
-          <FiMapPin className="text-blue-500 flex-shrink-0" />
+          <FiMapPin className="text-blue-500 shrink-0" />
           <span className="text-sm">
             {property.city}, {property.state}
           </span>
