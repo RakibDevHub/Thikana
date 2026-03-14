@@ -635,6 +635,7 @@ const Home = () => {
               </p>
               <Link
                 to="/contact"
+                state={{ scrollTo: "form" }}
                 className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-4 rounded-xl hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 font-semibold group"
               >
                 Contact Us

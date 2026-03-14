@@ -20,34 +20,6 @@ const Footer = () => {
     { id: "faq", label: "FAQ's", sectionTitle: "Home" },
   ];
 
-  // ABOUT LINKS
-  const aboutLinks = [
-    {
-      id: "story",
-      label: "Our Story",
-      path: "/about#story",
-      sectionTitle: "About Us",
-    },
-    {
-      id: "team",
-      label: "Our Team",
-      path: "/about#team",
-      sectionTitle: "About Us",
-    },
-    {
-      id: "clients",
-      label: "Our Clients",
-      path: "/about#clients",
-      sectionTitle: "About Us",
-    },
-    {
-      id: "offices",
-      label: "Our Offices",
-      path: "/about#offices",
-      sectionTitle: "About Us",
-    },
-  ];
-
   // PROPERTIES LINKS
   const propertiesLinks = [
     {
@@ -76,6 +48,34 @@ const Footer = () => {
     },
   ];
 
+  // ABOUT LINKS
+  const aboutLinks = [
+    {
+      id: "story",
+      label: "Our Story",
+      path: "/about#story",
+      sectionTitle: "About Us",
+    },
+    {
+      id: "team",
+      label: "Our Team",
+      path: "/about#team",
+      sectionTitle: "About Us",
+    },
+    {
+      id: "clients",
+      label: "Our Clients",
+      path: "/about#clients",
+      sectionTitle: "About Us",
+    },
+    {
+      id: "values",
+      label: "Our Values",
+      path: "/about#values",
+      sectionTitle: "About Us",
+    },
+  ];
+
   // CONTACT LINKS
   const contactLinks = [
     {
@@ -91,12 +91,23 @@ const Footer = () => {
       sectionTitle: "Contact",
     },
     {
+      id: "map",
+      label: "Google Map",
+      path: "/contact#location",
+      sectionTitle: "Contact",
+    },
+    {
       id: "support",
       label: "24/7 Support",
       path: "/contact#support",
       sectionTitle: "Contact",
     },
-    { id: "faq", label: "FAQ's", path: "/faq", sectionTitle: "Contact" },
+    {
+      id: "hours",
+      label: "Business Hours",
+      path: "/contact#hours",
+      sectionTitle: "Contact",
+    },
   ];
 
   const handleSectionClick = (e, link) => {
@@ -132,6 +143,7 @@ const Footer = () => {
       // Already on correct page, scroll immediately
       if (sectionId) {
         scrollToSection(sectionId);
+        console.log(sectionId);
       }
     }
   };
