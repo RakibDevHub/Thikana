@@ -617,7 +617,7 @@ const PropertyFormModal = ({ title, formData, onClose, onSubmit, onChange, submi
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white dark:bg-gray-800 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col">
-        {/* Fixed Header */}
+        {/* Modal Header */}
         <div className="p-6 border-b border-gray-200 dark:border-gray-700 shrink-0">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold dark:text-white">{title}</h2>
@@ -630,7 +630,7 @@ const PropertyFormModal = ({ title, formData, onClose, onSubmit, onChange, submi
           </div>
         </div>
 
-        {/* Scrollable Form Area - with custom scrollbar */}
+        {/* Modal Body */}
         <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-800">
           <form onSubmit={onSubmit} className="p-6 space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -861,7 +861,7 @@ const PropertyFormModal = ({ title, formData, onClose, onSubmit, onChange, submi
           </form>
         </div>
 
-        {/* Fixed Footer with Buttons */}
+        {/* Modal Footer */}
         <div className="p-6 border-t border-gray-200 dark:border-gray-700 shrink-0">
           <div className="flex justify-end gap-3">
             <button
