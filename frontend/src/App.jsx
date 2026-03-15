@@ -6,6 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { ThemeProvider } from "./components/context/Theme";
+import ScrollToTop from "./components/common/ScrollToTop";
 
 // Layouts
 import PublicLayout from "./layout/PublicLayout";
@@ -35,6 +36,7 @@ function App() {
   return (
     <ThemeProvider>
       <Router>
+        <ScrollToTop />
         <Routes>
           {/* Public Routes */}
           <Route element={<PublicLayout />}>
