@@ -14,6 +14,7 @@ import {
   FiMapPin,
   FiChevronLeft,
   FiChevronRight,
+  FiCheckSquare,
 } from "react-icons/fi";
 
 const AdminProperties = () => {
@@ -295,8 +296,8 @@ const AdminProperties = () => {
         );
       case "sold":
         return (
-          <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-full text-xs font-medium w-fit">
-            Sold
+          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-xs font-medium flex items-center gap-1 w-fit">
+            <FiCheckSquare className="text-xs" /> Sold
           </span>
         );
       default:
