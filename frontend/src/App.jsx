@@ -5,7 +5,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { ThemeProvider } from "./components/context/Theme";
+import { ThemeProvider } from "./context/Theme";
 import ScrollToTop from "./components/common/ScrollToTop";
 
 // Layouts

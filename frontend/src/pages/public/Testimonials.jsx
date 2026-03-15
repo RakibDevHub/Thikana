@@ -1,6 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { FiStar, FiChevronRight, FiFilter, FiX } from "react-icons/fi";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  FiStar,
+  FiChevronRight,
+  FiFilter,
+  FiX,
+  FiSend,
+  FiCheckCircle,
+  FiUpload,
+  FiImage,
+} from "react-icons/fi";
 import TestimonialCard from "../../components/common/TestimonialCard";
 import LoadingSpinner from "../../components/common/LoadingSpinner";
 
@@ -10,6 +18,21 @@ const Testimonials = () => {
   const [loading, setLoading] = useState(true);
   const [selectedRating, setSelectedRating] = useState("all");
   const [showFilters, setShowFilters] = useState(false);
+
+  // Form state
+  const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    location: "",
+    rating: 5,
+    testimonial: "",
+    image: null,
+  });
+  const [imagePreview, setImagePreview] = useState(null);
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
+  const fileInputRef = useRef(null);
 
   // Mock testimonials data - in real app, this would come from API
   useEffect(() => {
@@ -116,7 +139,7 @@ const Testimonials = () => {
           featured: false,
         },
       ];
-      
+
       setTestimonials(mockTestimonials);
       setFilteredTestimonials(mockTestimonials);
       setLoading(false);
@@ -128,23 +151,128 @@ const Testimonials = () => {
     if (selectedRating === "all") {
       setFilteredTestimonials(testimonials);
     } else {
-      const filtered = testimonials.filter(t => t.rating === parseInt(selectedRating));
+      const filtered = testimonials.filter(
+        (t) => t.rating === parseInt(selectedRating),
+      );
       setFilteredTestimonials(filtered);
     }
   }, [selectedRating, testimonials]);
 
-  const featuredTestimonials = testimonials.filter(t => t.featured).slice(0, 3);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleRatingChange = (rating) => {
+    setFormData({
+      ...formData,
+      rating: rating,
+    });
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Check file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert("File size too large. Please upload an image less than 5MB.");
+        return;
+      }
+
+      // Check file type
+      if (!file.type.startsWith("image/")) {
+        alert("Please upload an image file (JPEG, PNG, etc.)");
+        return;
+      }
+
+      setFormData({
+        ...formData,
+        image: file,
+      });
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = () => {
+    setFormData({
+      ...formData,
+      image: null,
+    });
+    setImagePreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormLoading(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      console.log("Testimonial submitted:", {
+        ...formData,
+        image: formData.image ? formData.image.name : null,
+      });
+
+      // Add new testimonial to list (in real app, this would come from API after approval)
+      const newTestimonial = {
+        id: testimonials.length + 1,
+        name: formData.name,
+        location: formData.location,
+        role: "Client",
+        rating: formData.rating,
+        text: formData.testimonial,
+        image: imagePreview, // In real app, this would be the uploaded image URL
+        date: new Date().toISOString().split("T")[0],
+        featured: false,
+      };
+
+      setTestimonials([newTestimonial, ...testimonials]);
+      setFormLoading(false);
+      setFormSubmitted(true);
+      setFormData({
+        name: "",
+        email: "",
+        location: "",
+        rating: 5,
+        testimonial: "",
+        image: null,
+      });
+      setImagePreview(null);
+
+      // Reset success message after 5 seconds
+      setTimeout(() => {
+        setFormSubmitted(false);
+        setShowForm(false);
+      }, 5000);
+    }, 1500);
+  };
+
+  const featuredTestimonials = testimonials
+    .filter((t) => t.featured)
+    .slice(0, 3);
 
   const ratingCounts = {
-    5: testimonials.filter(t => t.rating === 5).length,
-    4: testimonials.filter(t => t.rating === 4).length,
-    3: testimonials.filter(t => t.rating === 3).length,
-    2: testimonials.filter(t => t.rating === 2).length,
-    1: testimonials.filter(t => t.rating === 1).length,
+    5: testimonials.filter((t) => t.rating === 5).length,
+    4: testimonials.filter((t) => t.rating === 4).length,
+    3: testimonials.filter((t) => t.rating === 3).length,
+    2: testimonials.filter((t) => t.rating === 2).length,
+    1: testimonials.filter((t) => t.rating === 1).length,
   };
 
   const averageRating = (
-    testimonials.reduce((acc, t) => acc + t.rating, 0) / testimonials.length || 0
+    testimonials.reduce((acc, t) => acc + t.rating, 0) / testimonials.length ||
+    0
   ).toFixed(1);
 
   if (loading) return <LoadingSpinner />;
@@ -260,7 +388,9 @@ const Testimonials = () => {
             </button>
 
             {/* Rating Filter */}
-            <div className={`flex gap-2 ${showFilters ? 'flex-wrap' : 'hidden sm:flex'}`}>
+            <div
+              className={`flex gap-2 ${showFilters ? "flex-wrap" : "hidden sm:flex"}`}
+            >
               <button
                 onClick={() => setSelectedRating("all")}
                 className={`px-4 py-2 rounded-lg transition ${
@@ -289,7 +419,11 @@ const Testimonials = () => {
 
           {/* Results Count */}
           <p className="mb-6 text-gray-600 dark:text-gray-400">
-            Showing <span className="font-semibold text-blue-600">{filteredTestimonials.length}</span> testimonials
+            Showing{" "}
+            <span className="font-semibold text-blue-600">
+              {filteredTestimonials.length}
+            </span>{" "}
+            testimonials
           </p>
 
           {/* Testimonials Grid */}
@@ -319,22 +453,204 @@ const Testimonials = () => {
         </div>
       </section>
 
-      {/* Submit Testimonial CTA */}
+      {/* Submit Testimonial Form */}
       <section className="py-20 bg-linear-to-r from-blue-600 to-blue-800 text-white">
-        <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Share Your Experience
-          </h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Have you worked with us? We'd love to hear about your experience.
-          </p>
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-2 bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 group"
-          >
-            Submit Your Testimonial
-            <FiChevronRight className="text-xl group-hover:translate-x-1 transition-transform" />
-          </Link>
+        <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            {!showForm && !formSubmitted ? (
+              <div className="text-center">
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  Share Your Experience
+                </h2>
+                <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+                  Have you worked with us? We'd love to hear about your
+                  experience.
+                </p>
+                <button
+                  onClick={() => setShowForm(true)}
+                  className="inline-flex items-center gap-2 bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 group"
+                >
+                  Write a Testimonial
+                  <FiChevronRight className="text-xl group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+            ) : formSubmitted ? (
+              <div className="bg-green-500/20 backdrop-blur-sm text-white p-8 rounded-2xl text-center">
+                <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FiCheckCircle className="text-3xl text-white" />
+                </div>
+                <h3 className="text-2xl font-bold mb-2">Thank You!</h3>
+                <p className="text-blue-100">
+                  Your testimonial has been submitted and will be published
+                  after review.
+                </p>
+              </div>
+            ) : (
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8">
+                <h2 className="text-2xl font-bold mb-6 text-center">
+                  Share Your Experience
+                </h2>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-medium text-blue-100 mb-2">
+                        Your Name *
+                      </label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white"
+                        placeholder="John Doe"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-blue-100 mb-2">
+                        Email Address *
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white"
+                        placeholder="john@example.com"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-blue-100 mb-2">
+                      Location (City, State)
+                    </label>
+                    <input
+                      type="text"
+                      name="location"
+                      value={formData.location}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white"
+                      placeholder="Miami, FL"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-blue-100 mb-2">
+                      Rating *
+                    </label>
+                    <div className="flex gap-2">
+                      {[1, 2, 3, 4, 5].map((rating) => (
+                        <button
+                          key={rating}
+                          type="button"
+                          onClick={() => handleRatingChange(rating)}
+                          className="focus:outline-none"
+                        >
+                          <FiStar
+                            className={`text-3xl transition-colors ${
+                              rating <= formData.rating
+                                ? "text-yellow-400 fill-yellow-400"
+                                : "text-white/50 hover:text-yellow-200"
+                            }`}
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Image Upload */}
+                  <div>
+                    <label className="block text-sm font-medium text-blue-100 mb-2">
+                      Your Photo (Optional)
+                    </label>
+                    <div className="flex items-center gap-4">
+                      {imagePreview ? (
+                        <div className="relative">
+                          <img
+                            src={imagePreview}
+                            alt="Preview"
+                            className="w-20 h-20 rounded-full object-cover border-2 border-white"
+                          />
+                          <button
+                            type="button"
+                            onClick={removeImage}
+                            className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-white hover:bg-red-600 transition"
+                          >
+                            <FiX className="text-sm" />
+                          </button>
+                        </div>
+                      ) : (
+                        <div
+                          onClick={() => fileInputRef.current?.click()}
+                          className="w-20 h-20 rounded-full bg-white/20 border-2 border-dashed border-white/30 flex flex-col items-center justify-center cursor-pointer hover:bg-white/30 transition"
+                        >
+                          <FiUpload className="text-xl text-white/70" />
+                          <span className="text-xs text-white/70 mt-1">
+                            Upload
+                          </span>
+                        </div>
+                      )}
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleImageChange}
+                        accept="image/*"
+                        className="hidden"
+                      />
+                      <div className="flex-1">
+                        <p className="text-sm text-blue-100">
+                          Upload a photo to appear with your testimonial
+                        </p>
+                        <p className="text-xs text-blue-200 mt-1">
+                          Max size: 5MB. Formats: JPG, PNG, GIF
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-blue-100 mb-2">
+                      Your Testimonial *
+                    </label>
+                    <textarea
+                      name="testimonial"
+                      value={formData.testimonial}
+                      onChange={handleInputChange}
+                      required
+                      rows="5"
+                      className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-white resize-none"
+                      placeholder="Tell us about your experience..."
+                    />
+                  </div>
+
+                  <div className="flex gap-4">
+                    <button
+                      type="submit"
+                      disabled={formLoading}
+                      className="flex-1 bg-white text-blue-600 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                      {formLoading ? (
+                        <>Submitting...</>
+                      ) : (
+                        <>
+                          Submit Testimonial <FiSend />
+                        </>
+                      )}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowForm(false)}
+                      className="px-6 py-3 border-2 border-white text-white rounded-xl font-semibold hover:bg-white hover:text-blue-600 transition"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
+          </div>
         </div>
       </section>
     </div>

@@ -1,4 +1,4 @@
-let currentHeaderHeight = 80;
+let currentHeaderHeight = 70;
 
 export const setHeaderHeight = (height) => {
   currentHeaderHeight = height;
@@ -7,12 +7,12 @@ export const setHeaderHeight = (height) => {
 const SECTION_OFFSETS = {
   // Home page sections
   "hero": true,                    
-  "features": true,                 
-  "why-choose-us": true,            
-  "services": true,                 
-  "how-it-works": true,             
-  "testimonials": true,             
-  "faq": true,                      
+  // "features": true,                 
+  // "why-choose-us": true,            
+  // "services": true,                 
+  // "how-it-works": true,             
+  // "testimonials": true,             
+  // "faq": true,                      
   
   // Properties page sections
   "categories": true,                

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useTheme } from "../context/Theme";
+import { useTheme } from "../../context/Theme";
 
 import { FaMoon, FaSun } from "react-icons/fa";
 import { IoClose, IoMenu } from "react-icons/io5";
@@ -72,7 +72,7 @@ const Header = ({ headerHeight = 80 }) => {
   return (
     <>
       <header className="w-full fixed top-0 left-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-lg z-50">
-        <div className="px-4 sm:px-6 lg:px-8 py-4 max-w-360 mx-auto">
+        <div className="px-4 sm:px-6 lg:px-8 py-2 max-w-360 mx-auto">
           <div className="flex justify-between items-center">
             {/* Logo */}
             <Link to="/" className="inline-block group">
