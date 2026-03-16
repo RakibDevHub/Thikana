@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   FiSave,
   FiUser,
@@ -15,10 +15,8 @@ import {
   FiAward,
   FiPlus,
   FiTrash2,
-  FiFacebook,
-  FiTwitter,
-  FiInstagram,
-  FiLinkedin,
+  FiCamera,
+  FiImage,
 } from "react-icons/fi";
 
 const AdminSettings = () => {
@@ -27,6 +25,9 @@ const AdminSettings = () => {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  // File input refs
+  const profileImageInput = useRef(null);
 
   // ========== PROFILE ==========
   const [profile, setProfile] = useState({
@@ -43,22 +44,18 @@ const AdminSettings = () => {
     phone: "+880 1712 345678",
     phone2: "+880 1912 345678",
     address: "123 Gulshan Avenue, Dhaka 1212, Bangladesh",
+    website: "www.thikana.com",
     currency: "BDT",
     currencySymbol: "৳",
     itemsPerPage: 12,
-    socialMedia: {
-      facebook: "https://facebook.com/thikana",
-      twitter: "https://twitter.com/thikana",
-      instagram: "https://instagram.com/thikana",
-      linkedin: "https://linkedin.com/company/thikana",
-    },
+    logo: null,
   });
 
   // ========== BUSINESS HOURS ==========
   const [businessHours, setBusinessHours] = useState([
-    { day: "Monday - Friday", hours: "9:00 AM - 7:00 PM" },
-    { day: "Saturday", hours: "10:00 AM - 4:00 PM" },
-    { day: "Sunday", hours: "Closed" },
+    { id: 1, day: "Monday - Friday", hours: "9:00 AM - 7:00 PM" },
+    { id: 2, day: "Saturday", hours: "10:00 AM - 4:00 PM" },
+    { id: 3, day: "Sunday", hours: "Closed" },
   ]);
 
   // ========== OFFICE LOCATIONS ==========
@@ -70,6 +67,7 @@ const AdminSettings = () => {
       phone: "+880 1712 345678",
       email: "dhaka@thikana.com",
       hours: "Mon-Fri: 9AM-7PM, Sat: 10AM-4PM",
+      image: null,
       isHeadquarters: true,
     },
     {
@@ -79,6 +77,7 @@ const AdminSettings = () => {
       phone: "+880 1812 345678",
       email: "ctg@thikana.com",
       hours: "Mon-Fri: 9AM-6PM, Sat: 9AM-2PM",
+      image: null,
       isHeadquarters: false,
     },
   ]);
@@ -113,17 +112,20 @@ const AdminSettings = () => {
     {
       id: 1,
       question: "How do I start the process of buying a home?",
-      answer: "Start by browsing our properties and saving your favorites. Then contact us to schedule viewings.",
+      answer:
+        "Start by browsing our properties and saving your favorites. Then contact us to schedule viewings.",
     },
     {
       id: 2,
       question: "What are the costs involved in buying a property?",
-      answer: "Costs include down payment (typically 5-20%), closing costs (2-5% of purchase price), home inspection, and moving expenses.",
+      answer:
+        "Costs include down payment (typically 5-20%), closing costs (2-5% of purchase price), home inspection, and moving expenses.",
     },
     {
       id: 3,
       question: "How long does it take to buy a home?",
-      answer: "The average home buying process takes 30-45 days from offer acceptance to closing.",
+      answer:
+        "The average home buying process takes 30-45 days from offer acceptance to closing.",
     },
   ]);
 
@@ -144,7 +146,6 @@ const AdminSettings = () => {
 
   const mainTabs = [
     { id: "profile", label: "Profile", icon: <FiUser /> },
-    { id: "password", label: "Password", icon: <FiLock /> },
     { id: "site", label: "Site Settings", icon: <FiGlobe /> },
   ];
 
@@ -157,6 +158,56 @@ const AdminSettings = () => {
     { id: "stats", label: "Statistics", icon: <FiAward /> },
   ];
 
+  // ========== IMAGE UPLOAD HANDLERS ==========
+
+  const handleProfileImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfile({ ...profile, avatar: reader.result });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleTeamImageUpload = (index, e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const updatedTeam = [...team];
+        updatedTeam[index].image = reader.result;
+        setTeam(updatedTeam);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleOfficeImageUpload = (index, e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const updatedOffices = [...offices];
+        updatedOffices[index].image = reader.result;
+        setOffices(updatedOffices);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleCompanyLogoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setCompany({ ...company, logo: reader.result });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   // ========== HANDLERS ==========
 
   // Profile
@@ -168,74 +219,76 @@ const AdminSettings = () => {
   // Company
   const handleCompanyChange = (e) => {
     const { name, value } = e.target;
-    if (name.startsWith("social.")) {
-      const social = name.split(".")[1];
-      setCompany({
-        ...company,
-        socialMedia: { ...company.socialMedia, [social]: value },
-      });
-    } else {
-      setCompany({ ...company, [name]: value });
-    }
+    setCompany({ ...company, [name]: value });
   };
 
   // Business Hours
-  const handleHourChange = (index, field, value) => {
-    const updated = [...businessHours];
-    updated[index][field] = value;
+  const handleHourChange = (id, field, value) => {
+    const updated = businessHours.map((item) =>
+      item.id === id ? { ...item, [field]: value } : item,
+    );
     setBusinessHours(updated);
   };
 
   const addBusinessHour = () => {
-    setBusinessHours([...businessHours, { day: "New Day", hours: "9:00 AM - 5:00 PM" }]);
+    const newId = Math.max(...businessHours.map((h) => h.id), 0) + 1;
+    setBusinessHours([
+      ...businessHours,
+      { id: newId, day: "New Day", hours: "9:00 AM - 5:00 PM" },
+    ]);
   };
 
-  const removeBusinessHour = (index) => {
+  const removeBusinessHour = (id) => {
     if (businessHours.length > 1) {
-      setBusinessHours(businessHours.filter((_, i) => i !== index));
+      setBusinessHours(businessHours.filter((item) => item.id !== id));
     }
   };
 
   // Offices
-  const handleOfficeChange = (index, field, value) => {
-    const updated = [...offices];
-    updated[index][field] = value;
+  const handleOfficeChange = (id, field, value) => {
+    const updated = offices.map((item) =>
+      item.id === id ? { ...item, [field]: value } : item,
+    );
     setOffices(updated);
   };
 
   const addOffice = () => {
+    const newId = Math.max(...offices.map((o) => o.id), 0) + 1;
     setOffices([
       ...offices,
       {
-        id: Date.now(),
+        id: newId,
         city: "New Office",
         address: "",
         phone: "",
         email: "",
         hours: "",
+        image: null,
         isHeadquarters: false,
       },
     ]);
   };
 
-  const removeOffice = (index) => {
+  const removeOffice = (id) => {
     if (offices.length > 1) {
-      setOffices(offices.filter((_, i) => i !== index));
+      setOffices(offices.filter((item) => item.id !== id));
     }
   };
 
   // Team
-  const handleTeamChange = (index, field, value) => {
-    const updated = [...team];
-    updated[index][field] = value;
+  const handleTeamChange = (id, field, value) => {
+    const updated = team.map((item) =>
+      item.id === id ? { ...item, [field]: value } : item,
+    );
     setTeam(updated);
   };
 
   const addTeamMember = () => {
+    const newId = Math.max(...team.map((t) => t.id), 0) + 1;
     setTeam([
       ...team,
       {
-        id: Date.now(),
+        id: newId,
         name: "New Member",
         role: "Role",
         bio: "Bio",
@@ -244,40 +297,43 @@ const AdminSettings = () => {
     ]);
   };
 
-  const removeTeamMember = (index) => {
+  const removeTeamMember = (id) => {
     if (team.length > 1) {
-      setTeam(team.filter((_, i) => i !== index));
+      setTeam(team.filter((item) => item.id !== id));
     }
   };
 
   // FAQ
-  const handleFaqChange = (index, field, value) => {
-    const updated = [...faq];
-    updated[index][field] = value;
+  const handleFaqChange = (id, field, value) => {
+    const updated = faq.map((item) =>
+      item.id === id ? { ...item, [field]: value } : item,
+    );
     setFaq(updated);
   };
 
   const addFaq = () => {
+    const newId = Math.max(...faq.map((f) => f.id), 0) + 1;
     setFaq([
       ...faq,
       {
-        id: Date.now(),
+        id: newId,
         question: "New Question",
         answer: "New answer",
       },
     ]);
   };
 
-  const removeFaq = (index) => {
+  const removeFaq = (id) => {
     if (faq.length > 1) {
-      setFaq(faq.filter((_, i) => i !== index));
+      setFaq(faq.filter((item) => item.id !== id));
     }
   };
 
   // Statistics
-  const handleStatChange = (index, field, value) => {
-    const updated = [...statistics];
-    updated[index][field] = value;
+  const handleStatChange = (id, field, value) => {
+    const updated = statistics.map((item) =>
+      item.id === id ? { ...item, [field]: value } : item,
+    );
     setStatistics(updated);
   };
 
@@ -366,8 +422,50 @@ const AdminSettings = () => {
           {/* PROFILE TAB */}
           {activeTab === "profile" && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold dark:text-white">Profile Information</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <h3 className="text-lg font-semibold dark:text-white">
+                Profile Information
+              </h3>
+
+              {/* Profile Image Upload */}
+              <div className="flex items-center gap-6">
+                <div className="relative">
+                  <div className="w-24 h-24 rounded-full bg-linear-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white text-3xl font-bold overflow-hidden">
+                    {profile.avatar ? (
+                      <img
+                        src={profile.avatar}
+                        alt={profile.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      profile.name.charAt(0)
+                    )}
+                  </div>
+                  <button
+                    onClick={() => profileImageInput.current.click()}
+                    className="absolute bottom-0 right-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition border-2 border-white dark:border-gray-800"
+                  >
+                    <FiCamera size={14} />
+                  </button>
+                  <input
+                    type="file"
+                    ref={profileImageInput}
+                    onChange={handleProfileImageUpload}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Upload a profile photo (JPG, PNG, max 2MB)
+                  </p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    Recommended: Square image, at least 200x200px
+                  </p>
+                </div>
+              </div>
+
+              {/* Profile Form */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Full Name
@@ -404,47 +502,26 @@ const AdminSettings = () => {
                     className="w-full px-4 py-2 border rounded-lg bg-gray-50 dark:bg-gray-900"
                   />
                 </div>
-              </div>
-            </div>
-          )}
-
-          {/* PASSWORD TAB */}
-          {activeTab === "password" && (
-            <div className="space-y-6 max-w-md">
-              <h3 className="text-lg font-semibold dark:text-white">Change Password</h3>
-              <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Current Password
+                    Password
                   </label>
-                  <input
-                    type="password"
-                    value={passwords.current}
-                    onChange={(e) => setPasswords({ ...passwords, current: e.target.value })}
-                    className="w-full px-4 py-2 border rounded-lg bg-gray-50 dark:bg-gray-900"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    New Password
-                  </label>
-                  <input
-                    type="password"
-                    value={passwords.new}
-                    onChange={(e) => setPasswords({ ...passwords, new: e.target.value })}
-                    className="w-full px-4 py-2 border rounded-lg bg-gray-50 dark:bg-gray-900"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Confirm New Password
-                  </label>
-                  <input
-                    type="password"
-                    value={passwords.confirm}
-                    onChange={(e) => setPasswords({ ...passwords, confirm: e.target.value })}
-                    className="w-full px-4 py-2 border rounded-lg bg-gray-50 dark:bg-gray-900"
-                  />
+                  <div className="relative">
+                    <input
+                      type="password"
+                      value="••••••••"
+                      disabled
+                      className="w-full px-4 py-2 border rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-500"
+                    />
+                    <button
+                      onClick={() => {
+                        /* Handle password change */
+                      }}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-blue-600 hover:text-blue-700"
+                    >
+                      Change
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -478,9 +555,47 @@ const AdminSettings = () => {
               {/* Company Info Sub-tab */}
               {activeSubTab === "company" && (
                 <div className="space-y-6">
-                  <h3 className="text-lg font-semibold dark:text-white">Company Information</h3>
+                  <h3 className="text-lg font-semibold dark:text-white">
+                    Company Information
+                  </h3>
+
+                  {/* Company Logo */}
+                  <div className="flex items-center gap-6">
+                    <div className="relative">
+                      <div className="w-20 h-20 rounded-lg bg-linear-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white text-2xl font-bold overflow-hidden">
+                        {company.logo ? (
+                          <img
+                            src={company.logo}
+                            alt={company.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <FiImage size={30} />
+                        )}
+                      </div>
+                      <button
+                        onClick={() =>
+                          document.getElementById("company-logo-upload").click()
+                        }
+                        className="absolute -bottom-2 -right-2 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 border-2 border-white dark:border-gray-800"
+                      >
+                        <FiCamera size={10} />
+                      </button>
+                      <input
+                        id="company-logo-upload"
+                        type="file"
+                        onChange={handleCompanyLogoUpload}
+                        accept="image/*"
+                        className="hidden"
+                      />
+                    </div>
+                    <p className="text-sm text-gray-500">
+                      Company logo (appears in header/footer)
+                    </p>
+                  </div>
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="">
+                    <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Company Name
                       </label>
@@ -577,53 +692,6 @@ const AdminSettings = () => {
                       </select>
                     </div>
                   </div>
-
-                  {/* Social Media */}
-                  <div>
-                    <h4 className="font-medium mb-3 dark:text-white">Social Media Links</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm text-gray-500 mb-1">Facebook</label>
-                        <input
-                          type="url"
-                          name="social.facebook"
-                          value={company.socialMedia.facebook}
-                          onChange={handleCompanyChange}
-                          className="w-full px-4 py-2 border rounded-lg bg-gray-50 dark:bg-gray-900"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm text-gray-500 mb-1">Twitter</label>
-                        <input
-                          type="url"
-                          name="social.twitter"
-                          value={company.socialMedia.twitter}
-                          onChange={handleCompanyChange}
-                          className="w-full px-4 py-2 border rounded-lg bg-gray-50 dark:bg-gray-900"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm text-gray-500 mb-1">Instagram</label>
-                        <input
-                          type="url"
-                          name="social.instagram"
-                          value={company.socialMedia.instagram}
-                          onChange={handleCompanyChange}
-                          className="w-full px-4 py-2 border rounded-lg bg-gray-50 dark:bg-gray-900"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm text-gray-500 mb-1">LinkedIn</label>
-                        <input
-                          type="url"
-                          name="social.linkedin"
-                          value={company.socialMedia.linkedin}
-                          onChange={handleCompanyChange}
-                          className="w-full px-4 py-2 border rounded-lg bg-gray-50 dark:bg-gray-900"
-                        />
-                      </div>
-                    </div>
-                  </div>
                 </div>
               )}
 
@@ -631,7 +699,9 @@ const AdminSettings = () => {
               {activeSubTab === "hours" && (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold dark:text-white">Business Hours</h3>
+                    <h3 className="text-lg font-semibold dark:text-white">
+                      Business Hours
+                    </h3>
                     <button
                       onClick={addBusinessHour}
                       className="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 flex items-center gap-1"
@@ -640,25 +710,33 @@ const AdminSettings = () => {
                     </button>
                   </div>
                   <div className="space-y-3">
-                    {businessHours.map((hour, index) => (
-                      <div key={index} className="flex items-center gap-3">
+                    {businessHours.map((hour) => (
+                      <div
+                        key={hour.id}
+                        className="flex items-center gap-3 group"
+                      >
                         <input
                           type="text"
                           value={hour.day}
-                          onChange={(e) => handleHourChange(index, "day", e.target.value)}
+                          onChange={(e) =>
+                            handleHourChange(hour.id, "day", e.target.value)
+                          }
                           className="w-40 px-3 py-2 border rounded-lg bg-gray-50 dark:bg-gray-900"
                           placeholder="Day"
                         />
                         <input
                           type="text"
                           value={hour.hours}
-                          onChange={(e) => handleHourChange(index, "hours", e.target.value)}
+                          onChange={(e) =>
+                            handleHourChange(hour.id, "hours", e.target.value)
+                          }
                           className="flex-1 px-3 py-2 border rounded-lg bg-gray-50 dark:bg-gray-900"
                           placeholder="Hours"
                         />
                         <button
-                          onClick={() => removeBusinessHour(index)}
-                          className="text-red-600 hover:text-red-700"
+                          onClick={() => removeBusinessHour(hour.id)}
+                          className="p-2 text-red-600 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-opacity"
+                          title="Remove"
                         >
                           <FiTrash2 size={16} />
                         </button>
@@ -672,7 +750,9 @@ const AdminSettings = () => {
               {activeSubTab === "offices" && (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold dark:text-white">Office Locations</h3>
+                    <h3 className="text-lg font-semibold dark:text-white">
+                      Office Locations
+                    </h3>
                     <button
                       onClick={addOffice}
                       className="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 flex items-center gap-1"
@@ -681,52 +761,147 @@ const AdminSettings = () => {
                     </button>
                   </div>
                   <div className="space-y-4">
-                    {offices.map((office, index) => (
-                      <div key={office.id} className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
-                        <div className="flex justify-between items-start mb-3">
-                          <input
-                            type="text"
-                            value={office.city}
-                            onChange={(e) => handleOfficeChange(index, "city", e.target.value)}
-                            className="px-3 py-2 border rounded-lg bg-white dark:bg-gray-800 font-medium"
-                            placeholder="City"
-                          />
-                          <button
-                            onClick={() => removeOffice(index)}
-                            className="text-red-600 hover:text-red-700"
-                          >
-                            <FiTrash2 size={16} />
-                          </button>
+                    {offices.map((office) => (
+                      <div
+                        key={office.id}
+                        className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg relative"
+                      >
+                        {/* Delete button - top right corner */}
+                        <button
+                          onClick={() => removeOffice(office.id)}
+                          className="absolute top-1 right-1 p-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition"
+                          title="Remove Office"
+                        >
+                          <FiTrash2 size={18} />
+                        </button>
+                        <div className="flex items-end gap-4 mb-4">
+                          {/* Office Image */}
+                          <div className="relative">
+                            <div className="w-20 h-20 rounded-lg bg-linear-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white text-xl font-bold overflow-hidden">
+                              {office.image ? (
+                                <img
+                                  src={office.image}
+                                  alt={office.city}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <FiImage size={24} />
+                              )}
+                            </div>
+                            <button
+                              onClick={() =>
+                                document
+                                  .getElementById(`office-image-${office.id}`)
+                                  .click()
+                              }
+                              className="absolute -bottom-2 -right-2 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 border-2 border-white dark:border-gray-800"
+                            >
+                              <FiCamera size={10} />
+                            </button>
+                            <input
+                              id={`office-image-${office.id}`}
+                              type="file"
+                              onChange={(e) =>
+                                handleOfficeImageUpload(
+                                  offices.findIndex((o) => o.id === office.id),
+                                  e,
+                                )
+                              }
+                              accept="image/*"
+                              className="hidden"
+                            />
+                          </div>
+
+                          <div className="flex-1">
+                            <input
+                              type="text"
+                              value={office.city}
+                              onChange={(e) =>
+                                handleOfficeChange(
+                                  office.id,
+                                  "city",
+                                  e.target.value,
+                                )
+                              }
+                              className="w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-800 font-medium"
+                              placeholder="City"
+                            />
+                          </div>
                         </div>
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           <input
                             type="text"
                             value={office.address}
-                            onChange={(e) => handleOfficeChange(index, "address", e.target.value)}
+                            onChange={(e) =>
+                              handleOfficeChange(
+                                office.id,
+                                "address",
+                                e.target.value,
+                              )
+                            }
                             className="px-3 py-2 border rounded-lg bg-white dark:bg-gray-800"
                             placeholder="Address"
                           />
                           <input
                             type="text"
                             value={office.phone}
-                            onChange={(e) => handleOfficeChange(index, "phone", e.target.value)}
+                            onChange={(e) =>
+                              handleOfficeChange(
+                                office.id,
+                                "phone",
+                                e.target.value,
+                              )
+                            }
                             className="px-3 py-2 border rounded-lg bg-white dark:bg-gray-800"
                             placeholder="Phone"
                           />
                           <input
                             type="email"
                             value={office.email}
-                            onChange={(e) => handleOfficeChange(index, "email", e.target.value)}
+                            onChange={(e) =>
+                              handleOfficeChange(
+                                office.id,
+                                "email",
+                                e.target.value,
+                              )
+                            }
                             className="px-3 py-2 border rounded-lg bg-white dark:bg-gray-800"
                             placeholder="Email"
                           />
                           <input
                             type="text"
                             value={office.hours}
-                            onChange={(e) => handleOfficeChange(index, "hours", e.target.value)}
+                            onChange={(e) =>
+                              handleOfficeChange(
+                                office.id,
+                                "hours",
+                                e.target.value,
+                              )
+                            }
                             className="px-3 py-2 border rounded-lg bg-white dark:bg-gray-800"
                             placeholder="Hours"
                           />
+                        </div>
+
+                        <div className="mt-3">
+                          <label className="flex items-center gap-2 text-sm">
+                            <input
+                              type="checkbox"
+                              checked={office.isHeadquarters}
+                              onChange={(e) =>
+                                handleOfficeChange(
+                                  office.id,
+                                  "isHeadquarters",
+                                  e.target.checked,
+                                )
+                              }
+                              className="w-4 h-4 text-blue-600 rounded"
+                            />
+                            <span className="text-gray-700 dark:text-gray-300">
+                              This is the headquarters
+                            </span>
+                          </label>
                         </div>
                       </div>
                     ))}
@@ -738,7 +913,9 @@ const AdminSettings = () => {
               {activeSubTab === "team" && (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold dark:text-white">Team Members</h3>
+                    <h3 className="text-lg font-semibold dark:text-white">
+                      Team Members
+                    </h3>
                     <button
                       onClick={addTeamMember}
                       className="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 flex items-center gap-1"
@@ -748,40 +925,90 @@ const AdminSettings = () => {
                   </div>
                   <div className="space-y-4">
                     {team.map((member, index) => (
-                      <div key={member.id} className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
-                        <div className="flex justify-end mb-2">
-                          <button
-                            onClick={() => removeTeamMember(index)}
-                            className="text-red-600 hover:text-red-700"
-                          >
-                            <FiTrash2 size={16} />
-                          </button>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          <input
-                            type="text"
-                            value={member.name}
-                            onChange={(e) => handleTeamChange(index, "name", e.target.value)}
-                            className="px-3 py-2 border rounded-lg bg-white dark:bg-gray-800"
-                            placeholder="Name"
-                          />
-                          <input
-                            type="text"
-                            value={member.role}
-                            onChange={(e) => handleTeamChange(index, "role", e.target.value)}
-                            className="px-3 py-2 border rounded-lg bg-white dark:bg-gray-800"
-                            placeholder="Role"
-                          />
-                          <div className="md:col-span-2">
-                            <textarea
-                              value={member.bio}
-                              onChange={(e) => handleTeamChange(index, "bio", e.target.value)}
-                              rows="2"
+                      <div
+                        key={member.id}
+                        className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg relative"
+                      >
+                        {/* Delete button - top right corner */}
+                        <button
+                          onClick={() => removeTeamMember(member.id)}
+                          className="absolute top-1 right-1 p-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition"
+                          title="Remove Member"
+                        >
+                          <FiTrash2 size={18} />
+                        </button>
+                        <div className="flex items-end gap-4 mb-4">
+                          {/* Member Image */}
+                          <div className="relative">
+                            <div className="w-20 h-20 rounded-full bg-linear-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white text-xl font-bold overflow-hidden">
+                              {member.image ? (
+                                <img
+                                  src={member.image}
+                                  alt={member.name}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                member.name.charAt(0)
+                              )}
+                            </div>
+                            <button
+                              onClick={() =>
+                                document
+                                  .getElementById(`team-image-${member.id}`)
+                                  .click()
+                              }
+                              className="absolute bottom-0 right-0 w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 border-2 border-white dark:border-gray-800"
+                            >
+                              <FiCamera size={10} />
+                            </button>
+                            <input
+                              id={`team-image-${member.id}`}
+                              type="file"
+                              onChange={(e) => handleTeamImageUpload(index, e)}
+                              accept="image/*"
+                              className="hidden"
+                            />
+                          </div>
+
+                          <div className="flex-1 flex flex-row gap-3">
+                            <input
+                              type="text"
+                              value={member.name}
+                              onChange={(e) =>
+                                handleTeamChange(
+                                  member.id,
+                                  "name",
+                                  e.target.value,
+                                )
+                              }
+                              className="w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-800 font-medium"
+                              placeholder="Name"
+                            />
+                            <input
+                              type="text"
+                              value={member.role}
+                              onChange={(e) =>
+                                handleTeamChange(
+                                  member.id,
+                                  "role",
+                                  e.target.value,
+                                )
+                              }
                               className="w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-800"
-                              placeholder="Bio"
+                              placeholder="Role"
                             />
                           </div>
                         </div>
+
+                        <textarea
+                          value={member.bio}
+                          onChange={(e) =>
+                            handleTeamChange(member.id, "bio", e.target.value)
+                          }
+                          rows="2"
+                          className="w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-800"
+                          placeholder="Bio"
+                        />
                       </div>
                     ))}
                   </div>
@@ -792,7 +1019,9 @@ const AdminSettings = () => {
               {activeSubTab === "faq" && (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold dark:text-white">Frequently Asked Questions</h3>
+                    <h3 className="text-lg font-semibold dark:text-white">
+                      Frequently Asked Questions
+                    </h3>
                     <button
                       onClick={addFaq}
                       className="px-3 py-1 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 flex items-center gap-1"
@@ -801,26 +1030,36 @@ const AdminSettings = () => {
                     </button>
                   </div>
                   <div className="space-y-4">
-                    {faq.map((item, index) => (
-                      <div key={item.id} className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
-                        <div className="flex justify-end mb-2">
-                          <button
-                            onClick={() => removeFaq(index)}
-                            className="text-red-600 hover:text-red-700"
-                          >
-                            <FiTrash2 size={16} />
-                          </button>
-                        </div>
-                        <input
-                          type="text"
-                          value={item.question}
-                          onChange={(e) => handleFaqChange(index, "question", e.target.value)}
-                          className="w-full px-3 py-2 mb-2 border rounded-lg bg-white dark:bg-gray-800"
-                          placeholder="Question"
-                        />
+                    {faq.map((item) => (
+                      <div
+                        key={item.id}
+                        className="bg-gray-50 dark:bg-gray-900 p-4 my-8  rounded-lg relative"
+                      >
+                        <button
+                          onClick={() => removeFaq(item.id)}
+                          className="absolute -top-3.75 -right-3.75 p-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition"
+                          title="Remove Question"
+                        >
+                          <FiTrash2 size={18} />
+                        </button>
+                          <input
+                            type="text"
+                            value={item.question}
+                            onChange={(e) =>
+                              handleFaqChange(
+                                item.id,
+                                "question",
+                                e.target.value,
+                              )
+                            }
+                            className="w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-800 mb-3"
+                            placeholder="Question"
+                          />
                         <textarea
                           value={item.answer}
-                          onChange={(e) => handleFaqChange(index, "answer", e.target.value)}
+                          onChange={(e) =>
+                            handleFaqChange(item.id, "answer", e.target.value)
+                          }
                           rows="2"
                           className="w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-800"
                           placeholder="Answer"
@@ -834,21 +1073,30 @@ const AdminSettings = () => {
               {/* Statistics Sub-tab */}
               {activeSubTab === "stats" && (
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold dark:text-white">Statistics</h3>
+                  <h3 className="text-lg font-semibold dark:text-white">
+                    Statistics
+                  </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {statistics.map((stat, index) => (
-                      <div key={stat.id} className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
+                    {statistics.map((stat) => (
+                      <div
+                        key={stat.id}
+                        className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg"
+                      >
                         <input
                           type="text"
                           value={stat.label}
-                          onChange={(e) => handleStatChange(index, "label", e.target.value)}
+                          onChange={(e) =>
+                            handleStatChange(stat.id, "label", e.target.value)
+                          }
                           className="w-full px-3 py-2 mb-2 border rounded-lg bg-white dark:bg-gray-800"
                           placeholder="Label"
                         />
                         <input
                           type="text"
                           value={stat.value}
-                          onChange={(e) => handleStatChange(index, "value", e.target.value)}
+                          onChange={(e) =>
+                            handleStatChange(stat.id, "value", e.target.value)
+                          }
                           className="w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-800"
                           placeholder="Value"
                         />
@@ -861,7 +1109,7 @@ const AdminSettings = () => {
           )}
         </div>
 
-        {/* Save Button (for all tabs) */}
+        {/* Save Button */}
         <div className="p-6 border-t border-gray-200 dark:border-gray-700">
           <div className="flex justify-end">
             <button
