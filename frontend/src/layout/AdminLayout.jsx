@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "../context/Theme";
+import Notification from "../components/admin/Notification";
 import {
   FiHome,
   FiGrid,
@@ -12,7 +13,6 @@ import {
   FiMenu,
   FiX,
   FiChevronRight,
-  FiBell,
 } from "react-icons/fi";
 import { FaMoon, FaSun } from "react-icons/fa";
 
@@ -109,18 +109,7 @@ const AdminLayout = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-      {/* Mobile Menu Button - Fixed position */}
-      {/* <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className={`lg:hidden fixed top-4 left-4 z-50 p-2.5 bg-white dark:bg-gray-800 rounded-lg shadow-lg transition-all duration-300 ${
-          sidebarOpen ? "opacity-0 pointer-events-none" : "opacity-100"
-        }`}
-        aria-label="Open menu"
-      >
-        <FiMenu size={24} />
-      </button> */}
-
-      {/* Sidebar Overlay for Mobile */}
+      {/* Sidebar Overlay */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 bg-black/50 lg:hidden z-40"
@@ -137,7 +126,7 @@ const AdminLayout = () => {
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
         `}
       >
-        {/* Logo Area with Close Button for Mobile */}
+        {/* Logo Area */}
         <div className="h-17.5 flex items-center justify-between lg:justify-center px-4 border-b border-gray-200 dark:border-gray-700">
           <Link to="/admin" className="flex items-center gap-0 group">
             <span className="text-2xl font-black bg-linear-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
@@ -148,7 +137,7 @@ const AdminLayout = () => {
             </span>
           </Link>
 
-          {/* Close button inside sidebar for mobile */}
+          {/* Close button for mobile */}
           <button
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition"
@@ -253,7 +242,6 @@ const AdminLayout = () => {
               <h1 className="hidden sm:block text-lg sm:text-xl font-semibold dark:text-white">
                 Welcome back, {admin.name}!
               </h1>
-              {/* Short Text */}
               <h1 className="block sm:hidden text-lg font-semibold dark:text-white">
                 Hi, {admin.name.split(" ")[0]}!
               </h1>
@@ -273,11 +261,8 @@ const AdminLayout = () => {
                 )}
               </button>
 
-              {/* Notifications */}
-              <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition relative">
-                <FiBell size={20} />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-              </button>
+              {/* Notifications - Single component */}
+              <Notification />
             </div>
           </div>
         </header>
