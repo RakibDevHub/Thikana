@@ -27,6 +27,7 @@ import AdminProperties from "./pages/admin/Properties";
 import AdminTestimonials from "./pages/admin/Testimonials";
 import AdminMessages from "./pages/admin/Messages";
 import AdminManagement from "./pages/admin/Admin";
+import AdminSettings from "./pages/admin/Settings";
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = localStorage.getItem("adminToken");
@@ -66,6 +67,7 @@ function App() {
             <Route path="testimonials" element={<AdminTestimonials />} />
             <Route path="messages" element={<AdminMessages />} />
             <Route path="admins" element={<AdminManagement />} />
+            <Route path="settings" element={<AdminSettings />} />
           </Route>
         </Routes>
       </Router>
