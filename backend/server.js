@@ -1,74 +1,45 @@
-const express = require('express');
-const cors = require('cors');
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import connectDB from './src/config/databse.js';
+import propertyRoutes from './src/routes/propertyRoutes.js';
+// import { seedDatabase } from './src/utils/seedData.js';
+import { errorHandler, notFound } from './src/middleware/errorHandler.js';
+
+// Load environment variables
+dotenv.config();
+
+// Connect to database
+await connectDB();
+
+// Seed database with sample data (only if empty)
+// setTimeout(() => seedDatabase(), 1000);
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
-
-// Sample properties data
-const properties = [
-  {
-    id: 1,
-    title: "Modern Luxury Villa",
-    description: "Beautiful villa with pool and garden",
-    price: 850000,
-    bedrooms: 4,
-    bathrooms: 3,
-    area: 3200,
-    city: "Miami",
-    state: "FL",
-    image: "https://images.unsplash.com/photo-1613977257363-707ba9348228?w=600"
-  },
-  {
-    id: 2,
-    title: "Downtown Apartment",
-    description: "Modern apartment in city center",
-    price: 350000,
-    bedrooms: 2,
-    bathrooms: 2,
-    area: 1200,
-    city: "Austin",
-    state: "TX",
-    image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600"
-  },
-  {
-    id: 3,
-    title: "Suburban Family Home",
-    description: "Perfect for families, great school district",
-    price: 450000,
-    bedrooms: 4,
-    bathrooms: 2.5,
-    area: 2400,
-    city: "Denver",
-    state: "CO",
-    image: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600"
-  }
-];
+app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.get('/', (req, res) => {
-  res.json({ message: "Thikana API is running!" });
+  res.json({ 
+    message: "Thikana API is running!",
+    version: "1.0.0",
+    database: 'connected'
+  });
 });
 
-// Get all properties
-app.get('/api/properties', (req, res) => {
-  res.json(properties);
-});
+app.use('/api/properties', propertyRoutes);
 
-// Get single property
-app.get('/api/properties/:id', (req, res) => {
-  const property = properties.find(p => p.id === parseInt(req.params.id));
-  if (property) {
-    res.json(property);
-  } else {
-    res.status(404).json({ message: "Property not found" });
-  }
-});
+// Error handling
+app.use(notFound);
+app.use(errorHandler);
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`✅ Backend running on http://localhost:${PORT}`);
+  console.log(`✅ Server running on http://localhost:${PORT}`);
+  console.log(`📡 API available at http://localhost:${PORT}/api/properties`);
 });

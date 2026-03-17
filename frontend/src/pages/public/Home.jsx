@@ -32,12 +32,31 @@ const Home = () => {
   useEffect(() => {
     fetch("http://localhost:5000/api/properties")
       .then((res) => res.json())
-      .then((data) => {
-        setProperties(data.slice(0, 6));
+
+      // .then((data) => {
+      //   setProperties(data.slice(0, 6));
+      //   setLoading(false);
+      // })
+      // .catch((err) => {
+      //   console.error("Error:", err);
+      //   setLoading(false);
+      // });
+      .then((response) => {
+        // Check if response has data array
+        if (response.success && Array.isArray(response.data)) {
+          setProperties(response.data.slice(0, 6));
+          // setFilteredProperties(response.data);
+        } else {
+          console.error("Unexpected API response:", response);
+          setProperties([]);
+          // setFilteredProperties([]);
+        }
         setLoading(false);
       })
       .catch((err) => {
         console.error("Error:", err);
+        setProperties([]);
+        // setFilteredProperties([]);
         setLoading(false);
       });
   }, []);
@@ -223,7 +242,10 @@ const Home = () => {
   return (
     <div className="overflow-hidden">
       {/* Hero Section */}
-      <section id="hero" className="relative min-h-screen flex items-center bg-linear-to-br from-blue-900 via-blue-800 to-blue-900 dark:from-blue-950 dark:via-blue-900 dark:to-blue-950 text-white pt-10 lg:pt-12">
+      <section
+        id="hero"
+        className="relative min-h-screen flex items-center bg-linear-to-br from-blue-900 via-blue-800 to-blue-900 dark:from-blue-950 dark:via-blue-900 dark:to-blue-950 text-white pt-10 lg:pt-12"
+      >
         {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
@@ -419,7 +441,10 @@ const Home = () => {
       </section>
 
       {/* Featured Properties */}
-      <section id="features" className="py-24 lg:py-32 bg-gray-50 dark:bg-gray-900">
+      <section
+        id="features"
+        className="py-24 lg:py-32 bg-gray-50 dark:bg-gray-900"
+      >
         <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             badge="✨ Featured Listings"
@@ -452,7 +477,10 @@ const Home = () => {
       </section>
 
       {/* Why Choose Us */}
-      <section id="why-choose-us" className="py-24 lg:py-32 bg-white dark:bg-gray-800 relative overflow-hidden">
+      <section
+        id="why-choose-us"
+        className="py-24 lg:py-32 bg-white dark:bg-gray-800 relative overflow-hidden"
+      >
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
           <div
@@ -503,7 +531,10 @@ const Home = () => {
       </section>
 
       {/* Service */}
-      <section id="services" className="py-24 lg:py-32 bg-white dark:bg-gray-800">
+      <section
+        id="services"
+        className="py-24 lg:py-32 bg-white dark:bg-gray-800"
+      >
         <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             badge="⚡ Our Expertise"
@@ -533,7 +564,10 @@ const Home = () => {
       </section>
 
       {/* How It Works */}
-      <section id="how-it-works" className="py-24 lg:py-32 bg-gray-50 dark:bg-gray-900">
+      <section
+        id="how-it-works"
+        className="py-24 lg:py-32 bg-gray-50 dark:bg-gray-900"
+      >
         <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             badge="🔄 Simple Process"
@@ -572,7 +606,10 @@ const Home = () => {
       </section>
 
       {/* Testimonials */}
-      <section id="testimonials" className="py-24 lg:py-32 bg-white dark:bg-gray-800">
+      <section
+        id="testimonials"
+        className="py-24 lg:py-32 bg-white dark:bg-gray-800"
+      >
         <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             badge="💬 Client Stories"

@@ -39,7 +39,7 @@ const Properties = () => {
     const params = new URLSearchParams(location.search);
     const locationParam = params.get("location");
     if (locationParam) {
-      setFilters(prev => ({ ...prev, location: locationParam }));
+      setFilters((prev) => ({ ...prev, location: locationParam }));
     }
   }, [location]);
 
@@ -47,13 +47,22 @@ const Properties = () => {
   useEffect(() => {
     fetch("http://localhost:5000/api/properties")
       .then((res) => res.json())
-      .then((data) => {
-        setProperties(data);
-        setFilteredProperties(data);
+      .then((response) => {
+        // Check if response has data array
+        if (response.success && Array.isArray(response.data)) {
+          setProperties(response.data);
+          setFilteredProperties(response.data);
+        } else {
+          console.error("Unexpected API response:", response);
+          setProperties([]);
+          setFilteredProperties([]);
+        }
         setLoading(false);
       })
       .catch((err) => {
         console.error("Error:", err);
+        setProperties([]);
+        setFilteredProperties([]);
         setLoading(false);
       });
   }, []);
@@ -63,29 +72,30 @@ const Properties = () => {
     let result = [...properties];
 
     if (filters.location) {
-      result = result.filter(p => 
-        p.city.toLowerCase().includes(filters.location.toLowerCase()) ||
-        p.state.toLowerCase().includes(filters.location.toLowerCase())
+      result = result.filter(
+        (p) =>
+          p.city.toLowerCase().includes(filters.location.toLowerCase()) ||
+          p.state.toLowerCase().includes(filters.location.toLowerCase()),
       );
     }
 
     if (filters.propertyType) {
-      result = result.filter(p => p.propertyType === filters.propertyType);
+      result = result.filter((p) => p.propertyType === filters.propertyType);
     }
 
     if (filters.minPrice) {
-      result = result.filter(p => p.price >= parseInt(filters.minPrice));
+      result = result.filter((p) => p.price >= parseInt(filters.minPrice));
     }
     if (filters.maxPrice) {
-      result = result.filter(p => p.price <= parseInt(filters.maxPrice));
+      result = result.filter((p) => p.price <= parseInt(filters.maxPrice));
     }
 
     if (filters.bedrooms) {
-      result = result.filter(p => p.bedrooms >= parseInt(filters.bedrooms));
+      result = result.filter((p) => p.bedrooms >= parseInt(filters.bedrooms));
     }
 
     if (filters.bathrooms) {
-      result = result.filter(p => p.bathrooms >= parseInt(filters.bathrooms));
+      result = result.filter((p) => p.bathrooms >= parseInt(filters.bathrooms));
     }
 
     switch (filters.sortBy) {
@@ -110,7 +120,7 @@ const Properties = () => {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    setFilters(prev => ({ ...prev, [name]: value }));
+    setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
   const clearFilters = () => {
@@ -183,15 +193,19 @@ const Properties = () => {
           <span className="flex items-center gap-2 font-semibold">
             <FiFilter /> Filters & Sorting
           </span>
-          <FiChevronDown className={`text-xl transition-transform ${showFilters ? 'rotate-180' : ''}`} />
+          <FiChevronDown
+            className={`text-xl transition-transform ${showFilters ? "rotate-180" : ""}`}
+          />
         </button>
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters Sidebar */}
-          <div className={`
+          <div
+            className={`
             lg:w-1/4 bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 h-fit sticky top-28 
-            ${showFilters ? 'block' : 'hidden lg:block'}
-          `}>
+            ${showFilters ? "block" : "hidden lg:block"}
+          `}
+          >
             {/* filter sidebar content */}
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold dark:text-white flex items-center gap-2">
@@ -234,8 +248,10 @@ const Properties = () => {
                 onChange={handleFilterChange}
                 className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                {propertyTypes.map(type => (
-                  <option key={type.value} value={type.value}>{type.label}</option>
+                {propertyTypes.map((type) => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
+                  </option>
                 ))}
               </select>
             </div>
@@ -283,8 +299,10 @@ const Properties = () => {
                   onChange={handleFilterChange}
                   className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  {bedroomOptions.map(option => (
-                    <option key={option.value} value={option.value}>{option.label}</option>
+                  {bedroomOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -298,15 +316,22 @@ const Properties = () => {
                   onChange={handleFilterChange}
                   className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  {bathroomOptions.map(option => (
-                    <option key={option.value} value={option.value}>{option.label}</option>
+                  {bathroomOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
                   ))}
                 </select>
               </div>
             </div>
 
             {/* Active Filters Summary */}
-            {(filters.location || filters.propertyType || filters.minPrice || filters.maxPrice || filters.bedrooms || filters.bathrooms) && (
+            {(filters.location ||
+              filters.propertyType ||
+              filters.minPrice ||
+              filters.maxPrice ||
+              filters.bedrooms ||
+              filters.bathrooms) && (
               <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
                   Active Filters:
@@ -319,12 +344,19 @@ const Properties = () => {
                   )}
                   {filters.propertyType && (
                     <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-sm">
-                      🏠 {propertyTypes.find(t => t.value === filters.propertyType)?.label}
+                      🏠{" "}
+                      {
+                        propertyTypes.find(
+                          (t) => t.value === filters.propertyType,
+                        )?.label
+                      }
                     </span>
                   )}
                   {(filters.minPrice || filters.maxPrice) && (
                     <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-sm">
-                      💰 {filters.minPrice && `$${filters.minPrice}`}{filters.minPrice && filters.maxPrice && ' - '}{filters.maxPrice && `$${filters.maxPrice}`}
+                      💰 {filters.minPrice && `$${filters.minPrice}`}
+                      {filters.minPrice && filters.maxPrice && " - "}
+                      {filters.maxPrice && `$${filters.maxPrice}`}
                     </span>
                   )}
                   {filters.bedrooms && (
@@ -348,9 +380,12 @@ const Properties = () => {
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4 mb-6">
               <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                 <p className="text-gray-600 dark:text-gray-400">
-                  <span className="font-semibold text-blue-600 dark:text-blue-400">{filteredProperties.length}</span> properties found
+                  <span className="font-semibold text-blue-600 dark:text-blue-400">
+                    {filteredProperties.length}
+                  </span>{" "}
+                  properties found
                 </p>
-                
+
                 <div className="flex items-center gap-4">
                   <select
                     name="sortBy"
@@ -358,28 +393,30 @@ const Properties = () => {
                     onChange={handleFilterChange}
                     className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                   >
-                    {sortOptions.map(option => (
-                      <option key={option.value} value={option.value}>{option.label}</option>
+                    {sortOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
                     ))}
                   </select>
 
                   <div className="flex items-center gap-1 border border-gray-200 dark:border-gray-700 rounded-xl p-1">
                     <button
-                      onClick={() => setViewMode('grid')}
+                      onClick={() => setViewMode("grid")}
                       className={`p-2 rounded-lg transition-colors ${
-                        viewMode === 'grid' 
-                          ? 'bg-blue-600 text-white' 
-                          : 'text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400'
+                        viewMode === "grid"
+                          ? "bg-blue-600 text-white"
+                          : "text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
                       }`}
                     >
                       <FiGrid />
                     </button>
                     <button
-                      onClick={() => setViewMode('list')}
+                      onClick={() => setViewMode("list")}
                       className={`p-2 rounded-lg transition-colors ${
-                        viewMode === 'list' 
-                          ? 'bg-blue-600 text-white' 
-                          : 'text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400'
+                        viewMode === "list"
+                          ? "bg-blue-600 text-white"
+                          : "text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
                       }`}
                     >
                       <FiList />
@@ -391,19 +428,22 @@ const Properties = () => {
 
             {/* Properties Display */}
             {filteredProperties.length > 0 ? (
-              <div className={`
-                ${viewMode === 'grid' 
-                  ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6' 
-                  : 'space-y-4'
+              <div
+                className={`
+                ${
+                  viewMode === "grid"
+                    ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6"
+                    : "space-y-4"
                 }
-              `}>
+              `}
+              >
                 {filteredProperties.map((property, index) => (
                   <div
                     key={property.id}
                     className="animate-fade-in"
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >
-                    {viewMode === 'grid' ? (
+                    {viewMode === "grid" ? (
                       <PropertyCard property={property} />
                     ) : (
                       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col md:flex-row">
@@ -425,15 +465,24 @@ const Properties = () => {
                             ${property.price.toLocaleString()}
                           </p>
                           <p className="text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
-                            {property.description || "Beautiful property in prime location with amazing features."}
+                            {property.description ||
+                              "Beautiful property in prime location with amazing features."}
                           </p>
                           <div className="flex items-center gap-4 text-gray-600 dark:text-gray-400 mb-4">
-                            <span className="flex items-center gap-1">🛏️ {property.bedrooms} beds</span>
-                            <span className="flex items-center gap-1">🛁 {property.bathrooms} baths</span>
-                            <span className="flex items-center gap-1">📐 {property.area} sqft</span>
+                            <span className="flex items-center gap-1">
+                              🛏️ {property.bedrooms} beds
+                            </span>
+                            <span className="flex items-center gap-1">
+                              🛁 {property.bathrooms} baths
+                            </span>
+                            <span className="flex items-center gap-1">
+                              📐 {property.area} sqft
+                            </span>
                           </div>
                           <div className="flex items-center justify-between">
-                            <span className="text-gray-500 dark:text-gray-500">📍 {property.city}, {property.state}</span>
+                            <span className="text-gray-500 dark:text-gray-500">
+                              📍 {property.city}, {property.state}
+                            </span>
                             <Link
                               to={`/property/${property.id}`}
                               className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
@@ -450,7 +499,9 @@ const Properties = () => {
             ) : (
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-12 text-center">
                 <div className="text-6xl mb-4">🏠</div>
-                <h3 className="text-2xl font-bold dark:text-white mb-2">No Properties Found</h3>
+                <h3 className="text-2xl font-bold dark:text-white mb-2">
+                  No Properties Found
+                </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-6">
                   Try adjusting your filters or search criteria
                 </p>
@@ -464,9 +515,12 @@ const Properties = () => {
             )}
           </div>
         </div>
-        
+
         {/* Property Categories Section */}
-        <section id="categories" className="mt-24 pt-16 border-t border-gray-200 dark:border-gray-700">
+        <section
+          id="categories"
+          className="mt-24 pt-16 border-t border-gray-200 dark:border-gray-700"
+        >
           <div className="text-center max-w-3xl mx-auto mb-12">
             <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-full">
               📋 Property Types
@@ -489,22 +543,36 @@ const Properties = () => {
               { type: "Land", icon: "🌲", count: "6" },
               { type: "Commercial", icon: "🏬", count: "10" },
               { type: "Luxury", icon: "👑", count: "7" },
-            ].map((category, index) => (
+            ].map((category) => (
               <button
-                key={index}
-                onClick={() => setFilters(prev => ({ ...prev, propertyType: category.type.toLowerCase() }))}
+                key={category.type}
+                onClick={() =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    propertyType: category.type.toLowerCase(),
+                  }))
+                }
                 className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 group"
               >
-                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">{category.icon}</div>
-                <h3 className="font-semibold text-gray-900 dark:text-white">{category.type}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{category.count} properties</p>
+                <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">
+                  {category.icon}
+                </div>
+                <h3 className="font-semibold text-gray-900 dark:text-white">
+                  {category.type}
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {category.count} properties
+                </p>
               </button>
             ))}
           </div>
         </section>
 
         {/* Portfolio Section */}
-        <section id="portfolio" className="mt-24 pt-16 border-t border-gray-200 dark:border-gray-700">
+        <section
+          id="portfolio"
+          className="mt-24 pt-16 border-t border-gray-200 dark:border-gray-700"
+        >
           <div className="text-center max-w-3xl mx-auto mb-12">
             <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-full">
               🖼️ Our Portfolio
@@ -519,19 +587,31 @@ const Properties = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3].map((item) => (
-              <div key={item} className="group relative overflow-hidden rounded-2xl shadow-lg h-64">
+              <div
+                key={item}
+                className="group relative overflow-hidden rounded-2xl shadow-lg h-64"
+              >
                 <img
                   src={`https://images.unsplash.com/photo-${
-                    item === 1 ? '1613977257363-707ba9348228' : 
-                    item === 2 ? '1545324418-cc1a3fa10c00' : 
-                    '1568605114967-8130f3a36994'
+                    item === 1
+                      ? "1613977257363-707ba9348228"
+                      : item === 2
+                        ? "1545324418-cc1a3fa10c00"
+                        : "1568605114967-8130f3a36994"
                   }?w=600`}
                   alt={`Project ${item}`}
                   className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent flex items-end p-6">
                   <div>
-                    <h3 className="text-white text-xl font-bold">Luxury {item === 1 ? 'Villa' : item === 2 ? 'Apartment' : 'Family Home'}</h3>
+                    <h3 className="text-white text-xl font-bold">
+                      Luxury{" "}
+                      {item === 1
+                        ? "Villa"
+                        : item === 2
+                          ? "Apartment"
+                          : "Family Home"}
+                    </h3>
                     <p className="text-gray-200 text-sm">Completed 2024</p>
                   </div>
                 </div>
@@ -541,7 +621,10 @@ const Properties = () => {
         </section>
 
         {/* Our Works Section */}
-        <section id="works" className="mt-24 pt-16 border-t border-gray-200 dark:border-gray-700">
+        <section
+          id="works"
+          className="mt-24 pt-16 border-t border-gray-200 dark:border-gray-700"
+        >
           <div className="text-center max-w-3xl mx-auto mb-12">
             <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-full">
               ⚙️ How We Work
@@ -556,23 +639,51 @@ const Properties = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { step: "01", title: "Search", desc: "Find properties that match your criteria" },
-              { step: "02", title: "View", desc: "Schedule visits to your shortlisted properties" },
-              { step: "03", title: "Negotiate", desc: "Get the best price with our expert negotiators" },
-              { step: "04", title: "Close", desc: "Smooth closing process with full support" },
+              {
+                step: "01",
+                title: "Search",
+                desc: "Find properties that match your criteria",
+              },
+              {
+                step: "02",
+                title: "View",
+                desc: "Schedule visits to your shortlisted properties",
+              },
+              {
+                step: "03",
+                title: "Negotiate",
+                desc: "Get the best price with our expert negotiators",
+              },
+              {
+                step: "04",
+                title: "Close",
+                desc: "Smooth closing process with full support",
+              },
             ].map((item) => (
-              <div key={item.step} className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md relative overflow-hidden group hover:shadow-xl transition">
+              <div
+                key={item.step}
+                className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md relative overflow-hidden group hover:shadow-xl transition"
+              >
                 <div className="absolute -right-4 -top-4 w-16 h-16 bg-blue-100 dark:bg-blue-900/20 rounded-full"></div>
-                <span className="text-4xl font-bold text-blue-200 dark:text-blue-800/30 mb-4 block">#{item.step}</span>
-                <h3 className="text-xl font-bold mb-2 dark:text-white group-hover:text-blue-600 transition">{item.title}</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm">{item.desc}</p>
+                <span className="text-4xl font-bold text-blue-200 dark:text-blue-800/30 mb-4 block">
+                  #{item.step}
+                </span>
+                <h3 className="text-xl font-bold mb-2 dark:text-white group-hover:text-blue-600 transition">
+                  {item.title}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm">
+                  {item.desc}
+                </p>
               </div>
             ))}
           </div>
         </section>
 
         {/* Property Management Section */}
-        <section id="management" className="mt-24 pt-16 border-t border-gray-200 dark:border-gray-700 mb-16">
+        <section
+          id="management"
+          className="mt-24 pt-16 border-t border-gray-200 dark:border-gray-700 mb-16"
+        >
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="lg:w-1/2">
               <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-full mb-4 inline-block">
@@ -582,8 +693,9 @@ const Properties = () => {
                 Full-Service Property Management
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
-                Let us handle the day-to-day operations of your investment properties. 
-                From tenant screening to maintenance, we've got you covered.
+                Let us handle the day-to-day operations of your investment
+                properties. From tenant screening to maintenance, we've got you
+                covered.
               </p>
               <ul className="space-y-3 mb-8">
                 {[
@@ -591,10 +703,15 @@ const Properties = () => {
                   "24/7 maintenance support",
                   "Rent collection and financial reporting",
                   "Regular property inspections",
-                  "Legal compliance and documentation"
-                ].map((item, index) => (
-                  <li key={index} className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                    <span className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">✓</span>
+                  "Legal compliance and documentation",
+                ].map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
+                  >
+                    <span className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">
+                      ✓
+                    </span>
                     {item}
                   </li>
                 ))}
