@@ -1,13 +1,27 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
+import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { FiChevronRight } from "react-icons/fi";
 import { scrollToSection } from "../../utils/scrollUtils";
 import pattern from "../../assets/images/footer-pattern.svg";
+import useSettings from "../../hooks/useSettings";
 
 const Footer = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { settings } = useSettings();
+
+  const company = settings?.company || {};
+  const socialMedia = company.socialMedia || {};
+  const offices = settings?.offices || [];
+
+  // SOCIAL LINK
+  const socialLinks = [
+    { key: "facebook", icon: <FaFacebookF />, label: "Facebook" },
+    { key: "twitter", icon: <FaTwitter />, label: "Twitter" },
+    { key: "instagram", icon: <FaInstagram />, label: "Instagram" },
+    { key: "linkedin", icon: <FaLinkedin />, label: "LinkedIn" },
+  ];
 
   // HOME LINKS
   const homeLinks = [
@@ -128,7 +142,7 @@ const Footer = () => {
     };
 
     const targetPage = getPageFromTitle(link.sectionTitle);
-    const sectionId = link.id || link.path?.split("#")[1]; // Extract hash if exists
+    const sectionId = link.id || link.path?.split("#")[1];
 
     if (location.pathname !== targetPage) {
       // Navigate to the correct page
@@ -175,7 +189,6 @@ const Footer = () => {
         {/* Main Footer Content */}
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-8">
           {/* Brand Section */}
-          {/* <div className="lg:w-1/4 space-y-6"> */}
           <div className="lg:w-1/2 space-y-6">
             {/* Logo */}
             <Link to="/" className="inline-block group">
@@ -201,20 +214,24 @@ const Footer = () => {
 
             {/* Social Links */}
             <div className="flex space-x-3 pt-2">
-              {[
-                { icon: <FaFacebookF />, href: "#", label: "Facebook" },
-                { icon: <FaTwitter />, href: "#", label: "Twitter" },
-                { icon: <FaInstagram />, href: "#", label: "Instagram" },
-              ].map((social, index) => (
-                <a
-                  key={index}
-                  href={social.href}
-                  className="w-10 h-10 bg-gray-700/50 hover:bg-blue-600 rounded-lg flex items-center justify-center text-gray-300 hover:text-white transition-all duration-300 transform hover:scale-110 hover:rotate-6"
-                  aria-label={social.label}
-                >
-                  {social.icon}
-                </a>
-              ))}
+              {socialLinks.map((social, index) => {
+                const link = socialMedia[social.key];
+
+                if (!link) return null;
+
+                return (
+                  <a
+                    key={index}
+                    href={link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 bg-gray-700/50 hover:bg-blue-600 rounded-lg flex items-center justify-center text-gray-300 hover:text-white transition-all duration-300 transform hover:scale-110 hover:rotate-6"
+                    aria-label={social.label}
+                  >
+                    {social.icon}
+                  </a>
+                );
+              })}
             </div>
 
             {/* Contact Badge */}
@@ -225,7 +242,7 @@ const Footer = () => {
                 </div>
                 <div>
                   <p className="text-gray-400">24/7 Support</p>
-                  <p className="text-white font-semibold">+1 (555) 123-4567</p>
+                  <p className="text-white font-semibold">{company.phone || "+1 (555) 123-4567"}</p>
                 </div>
               </div>
             </div>
@@ -268,8 +285,8 @@ const Footer = () => {
         <div className="border-t border-gray-700/50 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-400 text-sm">
-              &copy; {new Date().getFullYear()} Thikana Real Estate. All rights
-              reserved.
+              &copy; {new Date().getFullYear()}{" "}
+              {company.name || "Thikana Real Estate"}. All rights reserved.
             </p>
             <div className="flex space-x-6 text-sm">
               <Link

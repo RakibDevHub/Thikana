@@ -122,6 +122,12 @@ export const seedSettings = async () => {
           currency: "BDT",
           currencySymbol: "৳",
           itemsPerPage: 12,
+          socialMedia: {
+            facebook: "https://facebook.com/thikana",
+            twitter: "https://twitter.com/thikana",
+            instagram: "https://instagram.com/thikana",
+            linkedin: "https://linkedin.com/company/thikana",
+          },
         },
         businessHours: [
           { id: 1, day: "Monday - Friday", hours: "9:00 AM - 7:00 PM" },

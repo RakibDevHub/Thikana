@@ -12,6 +12,12 @@ const settingsSchema = new mongoose.Schema(
       currency: { type: String, default: "BDT" },
       currencySymbol: { type: String, default: "৳" },
       itemsPerPage: { type: Number, default: 12 },
+      socialMedia: {
+        facebook: { type: String, default: "" },
+        twitter: { type: String, default: "" },
+        instagram: { type: String, default: "" },
+        linkedin: { type: String, default: "" },
+      },
     },
     businessHours: [
       {

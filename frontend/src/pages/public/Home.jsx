@@ -22,6 +22,7 @@ import {
 } from "react-icons/fi";
 
 import Hero from "../../assets/images/hero.webp";
+import axios from "axios";
 
 const Home = () => {
   const [properties, setProperties] = useState([]);
@@ -30,35 +31,27 @@ const Home = () => {
 
   // Fetch properties
   useEffect(() => {
-    fetch("http://localhost:5000/api/properties")
-      .then((res) => res.json())
+    const fetchProperties = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/properties",
+        );
 
-      // .then((data) => {
-      //   setProperties(data.slice(0, 6));
-      //   setLoading(false);
-      // })
-      // .catch((err) => {
-      //   console.error("Error:", err);
-      //   setLoading(false);
-      // });
-      .then((response) => {
-        // Check if response has data array
-        if (response.success && Array.isArray(response.data)) {
-          setProperties(response.data.slice(0, 6));
-          // setFilteredProperties(response.data);
+        if (response.data.success && Array.isArray(response.data.data)) {
+          setProperties(response.data.data.slice(0, 6));
         } else {
           console.error("Unexpected API response:", response);
           setProperties([]);
-          // setFilteredProperties([]);
         }
-        setLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error("Error:", err);
         setProperties([]);
-        // setFilteredProperties([]);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchProperties();
   }, []);
 
   const services = [

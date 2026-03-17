@@ -15,6 +15,7 @@ import {
   FiDollarSign,
   FiArrowRight,
 } from "react-icons/fi";
+import axios from "axios";
 
 const Properties = () => {
   const [properties, setProperties] = useState([]);
@@ -45,26 +46,26 @@ const Properties = () => {
 
   // Fetch properties
   useEffect(() => {
-    fetch("http://localhost:5000/api/properties")
-      .then((res) => res.json())
-      .then((response) => {
-        // Check if response has data array
-        if (response.success && Array.isArray(response.data)) {
-          setProperties(response.data);
-          setFilteredProperties(response.data);
-        } else {
-          console.error("Unexpected API response:", response);
-          setProperties([]);
-          setFilteredProperties([]);
+    const fetchProperties = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/properties",
+        );
+
+        if (response.data.success && Array.isArray(response.data.data)) {
+          setProperties(response.data.data);
+          setFilteredProperties(response.data.data);
         }
-        setLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error("Error:", err);
         setProperties([]);
         setFilteredProperties([]);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchProperties();
   }, []);
 
   // Apply filters whenever filters change

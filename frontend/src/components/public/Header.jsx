@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "../../context/Theme";
+import useSettings from "../../hooks/useSettings";
 
 import { FaMoon, FaSun } from "react-icons/fa";
 import { IoClose, IoMenu } from "react-icons/io5";
@@ -8,6 +9,15 @@ import { FiHome, FiList, FiInfo, FiMail, FiTool, FiX } from "react-icons/fi";
 
 const Header = ({ headerHeight = 80 }) => {
   const { theme, toggleTheme } = useTheme();
+  const { settings } = useSettings();
+
+  // Update document title when settings load
+  useEffect(() => {
+    if (settings?.company?.name) {
+      document.title = settings.company.name;
+    }
+  }, [settings]);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const location = useLocation();
@@ -208,7 +218,7 @@ const Header = ({ headerHeight = 80 }) => {
                 </div>
                 <div>
                   <p className="font-semibold text-gray-800 dark:text-white">
-                    Thikana Real Estate
+                    {settings?.company?.name || "Thikana Real Estate"}
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
                     <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
