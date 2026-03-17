@@ -3,7 +3,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './src/config/databse.js';
 import propertyRoutes from './src/routes/propertyRoutes.js';
-// import { seedDatabase } from './src/utils/seedData.js';
+import settingsRoutes from './src/routes/settingsRoutes.js';
+import { seedDatabase } from './src/utils/seedData.js';
 import { errorHandler, notFound } from './src/middleware/errorHandler.js';
 
 // Load environment variables
@@ -13,7 +14,7 @@ dotenv.config();
 await connectDB();
 
 // Seed database with sample data (only if empty)
-// setTimeout(() => seedDatabase(), 1000);
+setTimeout(() => seedDatabase(), 1000);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -33,6 +34,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/properties', propertyRoutes);
+app.use('/api/settings', settingsRoutes);
 
 // Error handling
 app.use(notFound);
