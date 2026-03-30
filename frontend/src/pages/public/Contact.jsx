@@ -14,10 +14,25 @@ import {
   FiLinkedin,
   FiMessageSquare,
 } from "react-icons/fi";
-import { FaWhatsapp } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaLinkedin, FaTwitter, FaWhatsapp } from "react-icons/fa";
+import useSettings from "../../hooks/useSettings";
 
 const Contact = () => {
   const location = useLocation();
+  const { settings } = useSettings();
+
+  const company = settings?.company || {};
+  const offices = settings?.offices || [];
+  const businessHours = settings?.businessHours || [];
+  const socialMedia = company.socialMedia || {};
+
+  // SOCIAL LINK
+  const socialLinks = [
+    { key: "facebook", icon: <FaFacebookF />, label: "Facebook" },
+    { key: "twitter", icon: <FaTwitter />, label: "Twitter" },
+    { key: "instagram", icon: <FaInstagram />, label: "Instagram" },
+    { key: "linkedin", icon: <FaLinkedin />, label: "LinkedIn" },
+  ];
 
   useEffect(() => {
     if (location.state?.scrollTo) {
@@ -59,29 +74,29 @@ const Contact = () => {
     }, 1000);
   };
 
-  const offices = [
-    {
-      city: "New York",
-      address: "123 Real Estate Avenue, Manhattan, NY 10001",
-      phone: "+1 (212) 555-1234",
-      email: "nyc@thikana.com",
-      hours: "Mon-Fri: 9AM - 7PM, Sat: 10AM - 4PM",
-    },
-    {
-      city: "Los Angeles",
-      address: "456 Sunset Boulevard, Beverly Hills, CA 90210",
-      phone: "+1 (310) 555-5678",
-      email: "la@thikana.com",
-      hours: "Mon-Fri: 8AM - 6PM, Sat: 10AM - 3PM",
-    },
-    {
-      city: "Miami",
-      address: "789 Ocean Drive, Miami Beach, FL 33139",
-      phone: "+1 (305) 555-9012",
-      email: "miami@thikana.com",
-      hours: "Mon-Fri: 9AM - 6PM, Sat: 9AM - 2PM",
-    },
-  ];
+  // const offices = [
+  //   {
+  //     city: "New York",
+  //     address: "123 Real Estate Avenue, Manhattan, NY 10001",
+  //     phone: "+1 (212) 555-1234",
+  //     email: "nyc@thikana.com",
+  //     hours: "Mon-Fri: 9AM - 7PM, Sat: 10AM - 4PM",
+  //   },
+  //   {
+  //     city: "Los Angeles",
+  //     address: "456 Sunset Boulevard, Beverly Hills, CA 90210",
+  //     phone: "+1 (310) 555-5678",
+  //     email: "la@thikana.com",
+  //     hours: "Mon-Fri: 8AM - 6PM, Sat: 10AM - 3PM",
+  //   },
+  //   {
+  //     city: "Miami",
+  //     address: "789 Ocean Drive, Miami Beach, FL 33139",
+  //     phone: "+1 (305) 555-9012",
+  //     email: "miami@thikana.com",
+  //     hours: "Mon-Fri: 9AM - 6PM, Sat: 9AM - 2PM",
+  //   },
+  // ];
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -214,7 +229,7 @@ const Contact = () => {
                     href="tel:+15551234567"
                     className="text-blue-600 font-semibold hover:underline"
                   >
-                    +1 (555) 123-4567
+                    {company.phone || "+1 (555) 123-4567"}
                   </a>
                 </div>
 
@@ -232,7 +247,7 @@ const Contact = () => {
                     href="mailto:info@thikana.com"
                     className="text-blue-600 font-semibold hover:underline"
                   >
-                    info@thikana.com
+                    {company.email || "info@thikana.com"}
                   </a>
                 </div>
               </div>
@@ -248,32 +263,52 @@ const Contact = () => {
                     Business Hours
                   </h2>
                 </div>
+
                 <div className="space-y-3">
-                  <div className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                    <span className="text-gray-600 dark:text-gray-400">
-                      Monday - Friday
-                    </span>
-                    <span className="font-semibold dark:text-white">
-                      9:00 AM - 7:00 PM
-                    </span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                    <span className="text-gray-600 dark:text-gray-400">
-                      Saturday
-                    </span>
-                    <span className="font-semibold dark:text-white">
-                      10:00 AM - 4:00 PM
-                    </span>
-                  </div>
-                  <div className="flex justify-between py-2">
-                    <span className="text-gray-600 dark:text-gray-400">
-                      Sunday
-                    </span>
-                    <span className="font-semibold dark:text-white">
-                      Closed
-                    </span>
-                  </div>
+                  {businessHours.length > 0 ? (
+                    businessHours.map((hour) => (
+                      <div
+                        key={hour.id}
+                        className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700 last:border-0"
+                      >
+                        <span className="text-gray-600 dark:text-gray-400">
+                          {hour.day}
+                        </span>
+                        <span className="font-semibold dark:text-white">
+                          {hour.hours}
+                        </span>
+                      </div>
+                    ))
+                  ) : (
+                    <>
+                      <div className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
+                        <span className="text-gray-600 dark:text-gray-400">
+                          Monday - Friday
+                        </span>
+                        <span className="font-semibold dark:text-white">
+                          9:00 AM - 7:00 PM
+                        </span>
+                      </div>
+                      <div className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
+                        <span className="text-gray-600 dark:text-gray-400">
+                          Saturday
+                        </span>
+                        <span className="font-semibold dark:text-white">
+                          10:00 AM - 4:00 PM
+                        </span>
+                      </div>
+                      <div className="flex justify-between py-2">
+                        <span className="text-gray-600 dark:text-gray-400">
+                          Sunday
+                        </span>
+                        <span className="font-semibold dark:text-white">
+                          Closed
+                        </span>
+                      </div>
+                    </>
+                  )}
                 </div>
+
                 <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
                   <p className="text-sm text-blue-600 dark:text-blue-400">
                     <span className="font-bold">24/7 Support:</span> For
@@ -405,21 +440,24 @@ const Contact = () => {
             Follow us on social media for updates and new properties
           </p>
           <div className="flex justify-center gap-4">
-            {[
-              { icon: <FiFacebook />, href: "#", label: "Facebook" },
-              { icon: <FiTwitter />, href: "#", label: "Twitter" },
-              { icon: <FiInstagram />, href: "#", label: "Instagram" },
-              { icon: <FiLinkedin />, href: "#", label: "LinkedIn" },
-            ].map((social, index) => (
-              <a
-                key={index}
-                href={social.href}
-                className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-blue-600 hover:text-white transition-all duration-300 transform hover:scale-110"
-                aria-label={social.label}
-              >
-                {social.icon}
-              </a>
-            ))}
+            {socialLinks.map((social, index) => {
+              const link = socialMedia[social.key];
+
+              if (!link) return null;
+
+              return (
+                <a
+                  key={index}
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-blue-600 hover:text-white transition-all duration-300 transform hover:scale-110"
+                  aria-label={social.label}
+                >
+                  {social.icon}
+                </a>
+              );
+            })}
           </div>
         </div>
       </section>
