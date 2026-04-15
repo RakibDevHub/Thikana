@@ -11,8 +11,13 @@ import {
   FiMapPin,
   FiBriefcase,
 } from "react-icons/fi";
+import useSettings from "../../hooks/useSettings";
 
 const About = () => {
+  const { settings } = useSettings();
+
+  const stat = settings?.statistics || [];
+
   const stats = [
     { value: "500+", label: "Properties Sold", icon: <FiBriefcase /> },
     { value: "1000+", label: "Happy Clients", icon: <FiUsers /> },
