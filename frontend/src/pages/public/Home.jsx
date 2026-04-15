@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import PropertyCard from "../../components/common/PropertyCard";
 import TestimonialCard from "../../components/common/TestimonialCard";
 import FAQItem from "../../components/common/FAQItem";
@@ -19,12 +20,26 @@ import {
   FiTrendingUp,
   FiUsers,
   FiFileText,
+  FiBriefcase,
 } from "react-icons/fi";
 
 import Hero from "../../assets/images/hero.webp";
-import axios from "axios";
+import useSiteConfig from "../../hooks/useSiteConfig";
+
+export const iconMap = {
+  FiBriefcase: <FiBriefcase />,
+  FiUsers: <FiUsers />,
+  FiAward: <FiAward />,
+  FiCheckCircle: <FiCheckCircle />,
+  FiDollarSign: <FiDollarSign />,
+  FiTrendingUp: <FiTrendingUp />,
+  FiUsers: <FiUsers />,
+  FiFileText: <FiFileText />,
+
+};
 
 const Home = () => {
+  const { config } = useSiteConfig();
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchLocation, setSearchLocation] = useState("");
@@ -54,58 +69,11 @@ const Home = () => {
     fetchProperties();
   }, []);
 
-  const services = [
-    {
-      icon: <FiDollarSign className="text-3xl" />,
-      title: "Valuation Mastery",
-      description:
-        "Accurate property valuations using market data and expert analysis to ensure you get the best price.",
-      color: "from-blue-400 to-blue-500",
-    },
-    {
-      icon: <FiTrendingUp className="text-3xl" />,
-      title: "Strategic Marketing",
-      description:
-        "Multi-channel marketing campaigns that reach the right buyers through digital and traditional platforms.",
-      color: "from-blue-500 to-blue-600",
-    },
-    {
-      icon: <FiUsers className="text-3xl" />,
-      title: "Negotiation Wizardry",
-      description:
-        "Skilled negotiation to get you the best deal, whether you're buying or selling your property.",
-      color: "from-blue-600 to-blue-700",
-    },
-    {
-      icon: <FiFileText className="text-3xl" />,
-      title: "Closing Success",
-      description:
-        "Hassle-free closing process with expert guidance through all paperwork and legal requirements.",
-      color: "from-blue-700 to-blue-800",
-    },
-  ];
+  const stats = config?.stats || [];
+  const faqs = config?.faq || [];
+  const services = config?.services || [];
+  const features = config?.features || [];
 
-  // Features data
-  const features = [
-    {
-      icon: "🏆",
-      title: "Trusted Since 2024",
-      description:
-        "Hundreds of happy clients found their dream homes with us. Our reputation speaks for itself.",
-    },
-    {
-      icon: "🔍",
-      title: "Best Selection",
-      description:
-        "Curated properties in prime locations across the country. Quality over quantity, always.",
-    },
-    {
-      icon: "🤝",
-      title: "Expert Guidance",
-      description:
-        "Professional agents to help you every step of the way. Your success is our priority.",
-    },
-  ];
 
   // testimonials data
   const testimonials = [
@@ -145,54 +113,6 @@ const Home = () => {
       text: "Sold my property in record time! Thikana's marketing strategy and negotiation skills got me an excellent deal.",
       image: "https://randomuser.me/api/portraits/men/75.jpg",
     },
-  ];
-
-  // FAQ data
-  const faqs = [
-    {
-      id: 1,
-      question: "How do I start the process of buying a home?",
-      answer:
-        "Start by browsing our properties and saving your favorites. Then contact us to schedule viewings. Our agents will guide you through financing options and the entire purchasing process.",
-    },
-    {
-      id: 2,
-      question: "What are the costs involved in buying a property?",
-      answer:
-        "Costs include down payment (typically 5-20%), closing costs (2-5% of purchase price), home inspection, appraisal, and moving expenses. We'll provide a detailed breakdown.",
-    },
-    {
-      id: 3,
-      question: "How long does it take to buy a home?",
-      answer:
-        "The average home buying process takes 30-45 days from offer acceptance to closing. This includes inspection, appraisal, loan processing, and final paperwork.",
-    },
-    {
-      id: 4,
-      question: "Do I need a pre-approval before viewing homes?",
-      answer:
-        "While not always required, getting pre-approved strengthens your position and shows sellers you're a serious buyer. It also helps you understand your budget.",
-    },
-    {
-      id: 5,
-      question: "Can you help me sell my property?",
-      answer:
-        "Absolutely! Our comprehensive selling service includes market analysis, professional photography, staging advice, marketing, and negotiation to get you the best price.",
-    },
-    {
-      id: 6,
-      question: "What areas do you serve?",
-      answer:
-        "We currently serve major metropolitan areas including Miami, Austin, Denver, Seattle, New York, and Los Angeles. Contact us for specific location availability.",
-    },
-  ];
-
-  // Stats data
-  const stats = [
-    { icon: <FiHome />, value: "500+", label: "Properties Sold" },
-    { icon: <FiUsers />, value: "1000+", label: "Happy Clients" },
-    { icon: <FiAward />, value: "15+", label: "Awards Won" },
-    { icon: <FiMapPin />, value: "25+", label: "Cities Covered" },
   ];
 
   // How it works steps
@@ -411,7 +331,11 @@ const Home = () => {
                 <div className="absolute inset-0 bg-linear-to-r from-blue-400/0 to-blue-600/0 group-hover:from-blue-400/10 group-hover:to-blue-600/10 rounded-2xl blur transition duration-300"></div>
                 <div className="relative text-center p-6">
                   <div className="text-4xl text-blue-300 mb-3 group-hover:scale-110 transition-transform duration-300 flex justify-center">
-                    {stat.icon}
+                    {stat.iconName && iconMap[stat.iconName] ? (
+                      iconMap[stat.iconName]
+                    ) : (
+                      <FiCheckCircle />
+                    )}
                   </div>
                   <div className="text-3xl font-bold text-white mb-1">
                     {stat.value}
@@ -542,7 +466,7 @@ const Home = () => {
                 className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-6 hover:shadow-xl transition-all group"
               >
                 <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <span className="text-2xl text-blue-600">{service.icon}</span>
+                  <span className="text-2xl text-blue-600">{service.iconName && iconMap[service.iconName] ? iconMap[service.iconName] : <FiCheckCircle />}</span>
                 </div>
                 <h3 className="text-xl font-bold mb-2 dark:text-white">
                   {service.title}
@@ -644,9 +568,9 @@ const Home = () => {
           />
 
           <div className="max-w-4xl mx-auto space-y-4">
-            {faqs.map((faq) => (
+            {faqs.map((faq, index) => (
               <FAQItem
-                key={faq.id}
+                key={index}
                 question={faq.question}
                 answer={faq.answer}
               />

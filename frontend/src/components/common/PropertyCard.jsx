@@ -8,15 +8,33 @@ const PropertyCard = ({ property }) => {
     return "$" + price.toLocaleString();
   };
 
+  // Get image URL with fallback logic
+  const getImageUrl = () => {
+    if (property.images && property.images[0]) {
+      // Check if images[0] is an object with url property
+      if (typeof property.images[0] === "object" && property.images[0].url) {
+        return property.images[0].url;
+      }
+      // If it's a string
+      if (typeof property.images[0] === "string") {
+        return property.images[0];
+      }
+    }
+    return "/images/property.webp"; // Fallback image
+  };
+
   return (
     <div className="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
       {/* Image Container */}
       <div className="relative overflow-hidden h-56">
         <img
-          loading="lazy"
-          src={property.image}
+          src={getImageUrl()}
           alt={property.title}
           className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
+          loading="lazy"
+          onError={(e) => {
+            e.target.src = "/images/property.webp";
+          }}
         />
 
         {/* Overlay */}
