@@ -3,94 +3,26 @@ import { Link } from "react-router-dom";
 import {
   FiUsers,
   FiAward,
-  FiHeart,
-  FiTarget,
-  FiEye,
   FiCheckCircle,
   FiArrowRight,
-  FiMapPin,
   FiBriefcase,
 } from "react-icons/fi";
-import useSettings from "../../hooks/useSettings";
+import useSiteConfig from "../../hooks/useSiteConfig";
+
+export const iconMap = {
+  FiBriefcase: <FiBriefcase />,
+  FiUsers: <FiUsers />,
+  FiAward: <FiAward />,
+  FiCheckCircle: <FiCheckCircle />
+};
 
 const About = () => {
-  const { settings } = useSettings();
+  const { config } = useSiteConfig();
 
-  const stat = settings?.statistics || [];
-
-  const stats = [
-    { value: "500+", label: "Properties Sold", icon: <FiBriefcase /> },
-    { value: "1000+", label: "Happy Clients", icon: <FiUsers /> },
-    { value: "15+", label: "Awards Won", icon: <FiAward /> },
-    { value: "8", label: "Years Experience", icon: <FiCheckCircle /> },
-  ];
-
-  const values = [
-    {
-      icon: "🤝",
-      title: "Integrity First",
-      description:
-        "We believe in transparent, honest dealings with every client, every time.",
-    },
-    {
-      icon: "⭐",
-      title: "Excellence Always",
-      description:
-        "We strive for excellence in every aspect of our service, no exceptions.",
-    },
-    {
-      icon: "❤️",
-      title: "Client-Centered",
-      description:
-        "Your goals become our goals. We're committed to your success.",
-    },
-    {
-      icon: "🌱",
-      title: "Continuous Growth",
-      description:
-        "We constantly learn, adapt, and improve to serve you better.",
-    },
-  ];
-
-  const team = [
-    {
-      name: "Sarah Mitchell",
-      role: "Founder & CEO",
-      experience: "15+ years in real estate",
-      image: "https://randomuser.me/api/portraits/women/44.jpg",
-      bio: "Former luxury agent turned entrepreneur, Sarah founded Thikana with a vision to make property dreams accessible to all.",
-    },
-    {
-      name: "James Wilson",
-      role: "Head of Sales",
-      experience: "12+ years experience",
-      image: "https://randomuser.me/api/portraits/men/32.jpg",
-      bio: "James has closed over $100M in transactions and leads our sales team with passion and expertise.",
-    },
-    {
-      name: "Elena Rodriguez",
-      role: "Property Manager",
-      experience: "10+ years in management",
-      image: "https://randomuser.me/api/portraits/women/63.jpg",
-      bio: "Elena ensures every property in our portfolio is maintained to the highest standards.",
-    },
-    {
-      name: "Michael Chen",
-      role: "Investment Advisor",
-      experience: "8+ years consulting",
-      image: "https://randomuser.me/api/portraits/men/75.jpg",
-      bio: "Michael specializes in helping investors build wealth through strategic property investments.",
-    },
-  ];
-
-  const clients = [
-    { name: "First National Bank", logo: "🏦" },
-    { name: "Global Investments Inc", logo: "📊" },
-    { name: "Luxury Estates Group", logo: "🏰" },
-    { name: "City Development Corp", logo: "🏗️" },
-    { name: "Retail Trust Fund", logo: "💰" },
-    { name: "International Holdings", logo: "🌍" },
-  ];
+  const stats = config?.stats || [];
+  const values = config?.values || [];
+  const team = config?.team || [];
+  const clients = config?.clients || [];
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -98,7 +30,7 @@ const About = () => {
       <section className="bg-linear-to-r from-blue-600 to-blue-800 text-white py-20">
         <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">About Thikana</h1>
-          <p className="text-xl text-blue-100 max-w-2xl">
+          <p className="text-xl text-blue-100">
             Your trusted partner in real estate, turning dreams into addresses
             since 2016.
           </p>
@@ -114,7 +46,9 @@ const About = () => {
                 key={index}
                 className="text-center p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition"
               >
-                <div className="text-3xl text-blue-600 mb-3 flex justify-center">{stat.icon}</div>
+                <div className="text-3xl text-blue-600 mb-3 flex justify-center">
+                  {stat.iconName && iconMap[stat.iconName] ? iconMap[stat.iconName] : <FiCheckCircle />}
+                </div>
                 <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
                   {stat.value}
                 </div>
@@ -141,13 +75,14 @@ const About = () => {
               <div className="space-y-4 text-gray-600 dark:text-gray-400">
                 <p>
                   Founded in 2016, Thikana began with a simple mission: to make
-                  the property journey transparent, enjoyable, and successful for
-                  every client. What started as a small team of passionate agents
-                  has grown into a trusted real estate platform serving thousands.
+                  the property journey transparent, enjoyable, and successful
+                  for every client. What started as a small team of passionate
+                  agents has grown into a trusted real estate platform serving
+                  thousands.
                 </p>
                 <p>
-                  Over the years, we've helped over 500 families find their dream
-                  homes and assisted countless investors in building their
+                  Over the years, we've helped over 500 families find their
+                  dream homes and assisted countless investors in building their
                   portfolios. Our growth comes from one thing: putting our
                   clients first, always.
                 </p>
@@ -177,16 +112,31 @@ const About = () => {
                 src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600"
                 alt="Office"
                 className="rounded-2xl shadow-lg h-64 object-cover"
+                loading="lazy"
+                onError={(e) => {
+                  e.target.src =
+                    "https://blocks.astratic.com/img/general-img-landscape.png";
+                }}
               />
               <img
                 src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600"
                 alt="Team Meeting"
                 className="rounded-2xl shadow-lg h-64 object-cover mt-8"
+                loading="lazy"
+                onError={(e) => {
+                  e.target.src =
+                    "https://blocks.astratic.com/img/general-img-landscape.png";
+                }}
               />
               <img
                 src="https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600"
                 alt="Handshake"
                 className="rounded-2xl shadow-lg h-64 object-cover col-span-2"
+                loading="lazy"
+                onError={(e) => {
+                  e.target.src =
+                    "https://blocks.astratic.com/img/general-img-landscape.png";
+                }}
               />
             </div>
           </div>
@@ -255,6 +205,11 @@ const About = () => {
                     src={member.image}
                     alt={member.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition duration-500"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.target.src =
+                        "https://blocks.astratic.com/img/user-img-big.png";
+                    }}
                   />
                 </div>
                 <div className="p-6">

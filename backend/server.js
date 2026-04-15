@@ -6,6 +6,7 @@ import propertyRoutes from './src/routes/propertyRoutes.js';
 import settingsRoutes from './src/routes/settingsRoutes.js';
 import { seedDatabase } from './src/utils/seedData.js';
 import { errorHandler, notFound } from './src/middleware/errorHandler.js';
+import configRoutes from './src/routes/configRoutes.js';
 
 // Load environment variables
 dotenv.config();
@@ -35,6 +36,8 @@ app.get('/', (req, res) => {
 
 app.use('/api/properties', propertyRoutes);
 app.use('/api/settings', settingsRoutes);
+app.use('/api', configRoutes);
+
 
 // Error handling
 app.use(notFound);
