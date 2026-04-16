@@ -38,10 +38,10 @@ const TestimonialCard = ({ testimonial = {} }) => {
             <img
               src={image}
               alt={name}
-              className="w-12 h-12 rounded-full object-cover border-2 border-blue-500"
+              className="w-12 h-12 rounded-full object-cover border-2 border-secondary-500"
             />
           ) : (
-            <div className="w-12 h-12 rounded-full bg-linear-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-lg">
+            <div className="w-12 h-12 rounded-full bg-linear-to-r from-secondary-500 to-secondary-600 flex items-center justify-center text-white font-bold text-lg">
               {name.charAt(0)}
             </div>
           )}

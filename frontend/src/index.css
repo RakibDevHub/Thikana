@@ -11,102 +11,102 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* =========================
+   CUSTOM COLOR THEME
+========================= */
+@theme {
+  /* Primary Colors - Blue (Trust & Professional) */
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
+
+  /* Secondary Colors - Gold (Premium Accent) */
+  --color-secondary-50: #fefce8;
+  --color-secondary-100: #fef9c3;
+  --color-secondary-200: #fef08a;
+  --color-secondary-300: #fde047;
+  --color-secondary-400: #facc15;
+  --color-secondary-500: #eab308;
+  --color-secondary-600: #ca8a04;
+  --color-secondary-700: #a16207;
+  --color-secondary-800: #854d0e;
+  --color-secondary-900: #713f12;
+
+  /* Semantic Colors */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #06b6d4;
+}
+
+/* =========================
    BASE STYLES
 ========================= */
 @layer base {
   * {
-    @apply m-0 p-0 box-border;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
 
   html {
-    @apply transition-colors duration-300;
+    transition: colors 0.3s;
   }
 
   body {
-    @apply font-sans bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 mx-auto;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: white;
+    color: #1f2937;
   }
 
-  section {
-    @apply px-4;
-  }
-
-  a {
-    @apply no-underline;
+  .dark body {
+    background-color: #111827;
+    color: #f3f4f6;
   }
 }
 
 /* =========================
-   COMPONENT STYLES
-   (Converted from App.css)
+   CUSTOM COMPONENT CLASSES
 ========================= */
 @layer components {
-  .header {
-    @apply bg-white dark:bg-gray-800 px-8 py-4 shadow flex justify-between items-center;
+  .container-custom {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
-  .header h1 {
-    @apply text-blue-600 text-xl font-bold;
+  .btn-primary {
+    background-color: var(--color-primary-600);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.2s;
   }
 
-  nav a {
-    @apply ml-8 text-gray-700 dark:text-gray-300 hover:text-blue-600 transition;
+  .btn-primary:hover {
+    background-color: var(--color-primary-700);
   }
 
-  .hero {
-    @apply bg-blue-600 text-white py-16 px-8 text-center;
+  .btn-secondary {
+    background-color: var(--color-secondary-500);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.2s;
   }
 
-  .hero h2 {
-    @apply text-4xl mb-4 font-bold;
-  }
-
-  .properties {
-    @apply py-16 px-8 max-w-6xl mx-auto;
-  }
-
-  .properties h2 {
-    @apply text-center mb-8 text-2xl font-semibold;
-  }
-
-  .property-grid {
-    @apply grid gap-8;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  }
-
-  .property-card {
-    @apply border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden transition-all duration-300;
-  }
-
-  .property-card:hover {
-    @apply -translate-y-1 shadow-lg;
-  }
-
-  .property-card img {
-    @apply w-full h-52 object-cover;
-  }
-
-  .property-card h3 {
-    @apply px-4 pt-4 pb-2 text-lg font-semibold;
-  }
-
-  .property-card p {
-    @apply px-4 text-gray-600 dark:text-gray-400 my-2;
-  }
-
-  .price {
-    @apply text-2xl font-bold text-blue-600;
-  }
-
-  .property-card button {
-    @apply m-4 px-4 py-2 bg-blue-600 text-white rounded cursor-pointer text-base transition;
-  }
-
-  .property-card button:hover {
-    @apply bg-blue-700;
-  }
-
-  .loading {
-    @apply text-center py-8 text-lg text-gray-500;
+  .btn-secondary:hover {
+    background-color: var(--color-secondary-600);
   }
 }
 
@@ -166,8 +166,6 @@
 /* =========================
    UTILITIES
 ========================= */
-
-/* Line clamp */
 .line-clamp-1 {
   overflow: hidden;
   display: -webkit-box;
@@ -213,7 +211,6 @@
   background: #6b7280;
 }
 
-/* Dark scrollbar */
 .dark .scrollbar-thin::-webkit-scrollbar-track {
   background: #1f2937;
 }

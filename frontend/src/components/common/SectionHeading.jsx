@@ -10,7 +10,7 @@ const SectionHeading = ({ badge, title, description, alignment = 'center' }) => 
   return (
     <div className={`max-w-3xl ${alignmentClasses[alignment]} mb-16`}>
       {badge && (
-        <span className="inline-block text-blue-600 dark:text-blue-400 font-semibold text-sm uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-full mb-4">
+        <span className="inline-block text-secondary-600 dark:text-secondary-400 font-semibold text-sm uppercase tracking-wider bg-secondary-50 dark:bg-secondary-900/30 px-4 py-2 rounded-full mb-4">
           {badge}
         </span>
       )}

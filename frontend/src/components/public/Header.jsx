@@ -52,30 +52,30 @@ const Header = ({ headerHeight = 80 }) => {
 
   const isActive = (path) => {
     return location.pathname === path
-      ? "text-primary-600 dark:text-primary-400 font-semibold bg-primary-50 dark:bg-primary-900/30"
-      : "text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-50 dark:hover:bg-gray-700/50";
+      ? "text-secondary-600 dark:text-secondary-400 font-semibold bg-secondary-50 dark:bg-secondary-900/30"
+      : "text-gray-700 dark:text-gray-300 hover:text-secondary-600 dark:hover:text-secondary-400 hover:bg-gray-50 dark:hover:bg-gray-700/50";
   };
 
   const navLinks = [
     {
       path: "/",
       label: "Home",
-      icon: <FiHome className="text-xl text-blue-600" />,
+      icon: <FiHome className="text-xl text-secondary-600" />,
     },
     {
       path: "/properties",
       label: "Properties",
-      icon: <FiList className="text-xl text-blue-600" />,
+      icon: <FiList className="text-xl text-secondary-600" />,
     },
     {
       path: "/about",
       label: "About Us",
-      icon: <FiInfo className="text-xl text-blue-600" />,
+      icon: <FiInfo className="text-xl text-secondary-600" />,
     },
     {
       path: "/contact",
       label: "Contact",
-      icon: <FiMail className="text-xl text-blue-600" />,
+      icon: <FiMail className="text-xl text-secondary-600" />,
     },
   ];
 
@@ -88,10 +88,10 @@ const Header = ({ headerHeight = 80 }) => {
             <Link to="/" className="inline-block group">
               <div className="flex flex-col">
                 <div className="flex items-center gap-0">
-                  <span className="text-2xl font-black bg-linear-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
+                  <span className="text-2xl font-black bg-linear-to-r from-secondary-400 to-secondary-600 bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
                     Thikana
                   </span>
-                  <span className="text-blue-500 text-3xl font-black -mt-1.5 group-hover:rotate-12 transition-transform duration-300">
+                  <span className="text-secondary-500 text-3xl font-black -mt-1.5 group-hover:rotate-12 transition-transform duration-300">
                     .
                   </span>
                 </div>
@@ -111,7 +111,7 @@ const Header = ({ headerHeight = 80 }) => {
                     link.path,
                   )}`}
                 >
-                  <span className="text-blue-500">{link.icon}</span>
+                  <span className="text-secondary-500">{link.icon}</span>
                   <span>{link.label}</span>
                 </Link>
               ))}
@@ -163,7 +163,7 @@ const Header = ({ headerHeight = 80 }) => {
         >
           <div className="relative h-full flex flex-col">
             {/* Mobile Menu Header with Gradient */}
-            <div className="bg-linear-to-r from-blue-600 to-blue-800 p-5">
+            <div className="bg-linear-to-r from-secondary-600 to-secondary-800 p-5">
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
@@ -171,7 +171,7 @@ const Header = ({ headerHeight = 80 }) => {
                   </div>
                   <div>
                     <h3 className="text-white font-semibold">Menu</h3>
-                    <p className="text-blue-100 text-xs">
+                    <p className="text-secondary-100 text-xs">
                       Navigate to sections
                     </p>
                   </div>
@@ -189,14 +189,14 @@ const Header = ({ headerHeight = 80 }) => {
                   flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300
                   ${
                     location.pathname === link.path
-                      ? "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-semibold border-l-4 border-blue-600"
+                      ? "bg-secondary-50 dark:bg-secondary-900/30 text-secondary-600 dark:text-secondary-400 font-semibold border-l-4 border-secondary-600"
                       : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:pl-6"
                   }
                 `}
                   onClick={closeMenu}
                 >
                   <span
-                    className={`text-xl ${location.pathname === link.path ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400"}`}
+                    className={`text-xl ${location.pathname === link.path ? "text-secondary-600 dark:text-secondary-400" : "text-gray-500 dark:text-gray-400"}`}
                   >
                     {link.icon}
                   </span>
@@ -204,7 +204,7 @@ const Header = ({ headerHeight = 80 }) => {
                     {link.label}
                   </span>
                   {location.pathname === link.path && (
-                    <span className="w-2 h-2 rounded-full bg-blue-600 dark:bg-blue-400" />
+                    <span className="w-2 h-2 rounded-full bg-secondary-600 dark:bg-secondary-400" />
                   )}
                 </Link>
               ))}
@@ -213,7 +213,7 @@ const Header = ({ headerHeight = 80 }) => {
             {/* Mobile Menu Footer with User Info */}
             <div className="border-t border-gray-200 dark:border-gray-800 p-6 bg-gray-50 dark:bg-gray-800/50">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-linear-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                <div className="w-12 h-12 rounded-full bg-linear-to-r from-secondary-500 to-secondary-600 flex items-center justify-center text-white font-bold text-lg shadow-lg">
                   T
                 </div>
                 <div>

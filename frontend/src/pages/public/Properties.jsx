@@ -176,10 +176,10 @@ const Properties = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header Section */}
-      <section className="bg-linear-to-r from-blue-600 to-blue-800 text-white py-16">
+      <section className="bg-linear-to-r from-secondary-600 to-secondary-800 text-white py-16">
         <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Properties</h1>
-          <p className="text-xl text-blue-100 max-w-2xl">
+          <p className="text-xl text-secondary-100 max-w-2xl">
             Discover your perfect property from our extensive collection
           </p>
         </div>
@@ -210,11 +210,11 @@ const Properties = () => {
             {/* filter sidebar content */}
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold dark:text-white flex items-center gap-2">
-                <FiFilter className="text-blue-600" /> Filters
+                <FiFilter className="text-secondary-600" /> Filters
               </h2>
               <button
                 onClick={clearFilters}
-                className="text-sm text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 flex items-center gap-1"
+                className="text-sm text-gray-500 hover:text-secondary-600 dark:text-gray-400 dark:hover:text-secondary-400 flex items-center gap-1"
               >
                 <FiX /> Clear
               </button>
@@ -233,7 +233,7 @@ const Properties = () => {
                   value={filters.location}
                   onChange={handleFilterChange}
                   placeholder="City or state"
-                  className="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-secondary-500"
                 />
               </div>
             </div>
@@ -247,7 +247,7 @@ const Properties = () => {
                 name="propertyType"
                 value={filters.propertyType}
                 onChange={handleFilterChange}
-                className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-secondary-500"
               >
                 {propertyTypes.map((type) => (
                   <option key={type.value} value={type.value}>
@@ -271,7 +271,7 @@ const Properties = () => {
                     value={filters.minPrice}
                     onChange={handleFilterChange}
                     placeholder="Min"
-                    className="w-full pl-8 pr-3 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-8 pr-3 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-secondary-500"
                   />
                 </div>
                 <div className="relative">
@@ -282,7 +282,7 @@ const Properties = () => {
                     value={filters.maxPrice}
                     onChange={handleFilterChange}
                     placeholder="Max"
-                    className="w-full pl-8 pr-3 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-8 pr-3 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-secondary-500"
                   />
                 </div>
               </div>
@@ -298,7 +298,7 @@ const Properties = () => {
                   name="bedrooms"
                   value={filters.bedrooms}
                   onChange={handleFilterChange}
-                  className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-secondary-500"
                 >
                   {bedroomOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -315,7 +315,7 @@ const Properties = () => {
                   name="bathrooms"
                   value={filters.bathrooms}
                   onChange={handleFilterChange}
-                  className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-secondary-500"
                 >
                   {bathroomOptions.map((option) => (
                     <option key={option.value} value={option.value}>
@@ -339,12 +339,12 @@ const Properties = () => {
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {filters.location && (
-                    <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-sm flex items-center gap-1">
+                    <span className="px-3 py-1 bg-secondary-100 dark:bg-secondary-900/30 text-secondary-600 dark:text-secondary-400 rounded-full text-sm flex items-center gap-1">
                       📍 {filters.location}
                     </span>
                   )}
                   {filters.propertyType && (
-                    <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-sm">
+                    <span className="px-3 py-1 bg-secondary-100 dark:bg-secondary-900/30 text-secondary-600 dark:text-secondary-400 rounded-full text-sm">
                       🏠{" "}
                       {
                         propertyTypes.find(
@@ -354,19 +354,19 @@ const Properties = () => {
                     </span>
                   )}
                   {(filters.minPrice || filters.maxPrice) && (
-                    <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-sm">
+                    <span className="px-3 py-1 bg-secondary-100 dark:bg-secondary-900/30 text-secondary-600 dark:text-secondary-400 rounded-full text-sm">
                       💰 {filters.minPrice && `$${filters.minPrice}`}
                       {filters.minPrice && filters.maxPrice && " - "}
                       {filters.maxPrice && `$${filters.maxPrice}`}
                     </span>
                   )}
                   {filters.bedrooms && (
-                    <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-sm">
+                    <span className="px-3 py-1 bg-secondary-100 dark:bg-secondary-900/30 text-secondary-600 dark:text-secondary-400 rounded-full text-sm">
                       🛏️ {filters.bedrooms}+ beds
                     </span>
                   )}
                   {filters.bathrooms && (
-                    <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-sm">
+                    <span className="px-3 py-1 bg-secondary-100 dark:bg-secondary-900/30 text-secondary-600 dark:text-secondary-400 rounded-full text-sm">
                       🛁 {filters.bathrooms}+ baths
                     </span>
                   )}
@@ -381,7 +381,7 @@ const Properties = () => {
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4 mb-6">
               <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                 <p className="text-gray-600 dark:text-gray-400">
-                  <span className="font-semibold text-blue-600 dark:text-blue-400">
+                  <span className="font-semibold text-secondary-600 dark:text-secondary-400">
                     {filteredProperties.length}
                   </span>{" "}
                   properties found
@@ -392,7 +392,7 @@ const Properties = () => {
                     name="sortBy"
                     value={filters.sortBy}
                     onChange={handleFilterChange}
-                    className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-secondary-500 text-sm"
                   >
                     {sortOptions.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -406,8 +406,8 @@ const Properties = () => {
                       onClick={() => setViewMode("grid")}
                       className={`p-2 rounded-lg transition-colors ${
                         viewMode === "grid"
-                          ? "bg-blue-600 text-white"
-                          : "text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+                          ? "bg-secondary-600 text-white"
+                          : "text-gray-500 hover:text-secondary-600 dark:text-gray-400 dark:hover:text-secondary-400"
                       }`}
                     >
                       <FiGrid />
@@ -416,8 +416,8 @@ const Properties = () => {
                       onClick={() => setViewMode("list")}
                       className={`p-2 rounded-lg transition-colors ${
                         viewMode === "list"
-                          ? "bg-blue-600 text-white"
-                          : "text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
+                          ? "bg-secondary-600 text-white"
+                          : "text-gray-500 hover:text-secondary-600 dark:text-gray-400 dark:hover:text-secondary-400"
                       }`}
                     >
                       <FiList />
@@ -447,52 +447,7 @@ const Properties = () => {
                     {viewMode === "grid" ? (
                       <PropertyCard property={property} />
                     ) : (
-                      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col md:flex-row">
-                        <div className="md:w-1/3 h-48 md:h-62 relative">
-                          <img
-                            src={property.image}
-                            alt={property.title}
-                            className="w-full h-full object-cover"
-                          />
-                          <div className="absolute top-3 right-3 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                            Featured
-                          </div>
-                        </div>
-                        <div className="md:w-2/3 p-6">
-                          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                            {property.title}
-                          </h3>
-                          <p className="text-2xl font-bold text-blue-600 mb-3">
-                            ${property.price.toLocaleString()}
-                          </p>
-                          <p className="text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
-                            {property.description ||
-                              "Beautiful property in prime location with amazing features."}
-                          </p>
-                          <div className="flex items-center gap-4 text-gray-600 dark:text-gray-400 mb-4">
-                            <span className="flex items-center gap-1">
-                              🛏️ {property.bedrooms} beds
-                            </span>
-                            <span className="flex items-center gap-1">
-                              🛁 {property.bathrooms} baths
-                            </span>
-                            <span className="flex items-center gap-1">
-                              📐 {property.area} sqft
-                            </span>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-gray-500 dark:text-gray-500">
-                              📍 {property.city}, {property.state}
-                            </span>
-                            <Link
-                              to={`/property/${property.id}`}
-                              className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-                            >
-                              View Details <FiArrowRight />
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
+                      <PropertyCard property={property} variant="list" />
                     )}
                   </div>
                 ))}
@@ -508,7 +463,7 @@ const Properties = () => {
                 </p>
                 <button
                   onClick={clearFilters}
-                  className="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition"
+                  className="bg-secondary-600 text-white px-6 py-3 rounded-xl hover:bg-secondary-700 transition"
                 >
                   Clear All Filters
                 </button>
@@ -523,7 +478,7 @@ const Properties = () => {
           className="mt-24 pt-16 border-t border-gray-200 dark:border-gray-700"
         >
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-full">
+            <span className="text-secondary-600 dark:text-secondary-400 font-semibold text-sm uppercase tracking-wider bg-secondary-50 dark:bg-secondary-900/30 px-4 py-2 rounded-full">
               📋 Property Types
             </span>
             <h2 className="text-3xl md:text-4xl font-bold mt-4 mb-4 dark:text-white">
@@ -575,7 +530,7 @@ const Properties = () => {
           className="mt-24 pt-16 border-t border-gray-200 dark:border-gray-700"
         >
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-full">
+            <span className="text-secondary-600 dark:text-secondary-400 font-semibold text-sm uppercase tracking-wider bg-secondary-50 dark:bg-secondary-900/30 px-4 py-2 rounded-full">
               🖼️ Our Portfolio
             </span>
             <h2 className="text-3xl md:text-4xl font-bold mt-4 mb-4 dark:text-white">
@@ -627,7 +582,7 @@ const Properties = () => {
           className="mt-24 pt-16 border-t border-gray-200 dark:border-gray-700"
         >
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-full">
+            <span className="text-secondary-600 dark:text-secondary-400 font-semibold text-sm uppercase tracking-wider bg-secondary-50 dark:bg-secondary-900/30 px-4 py-2 rounded-full">
               ⚙️ How We Work
             </span>
             <h2 className="text-3xl md:text-4xl font-bold mt-4 mb-4 dark:text-white">
@@ -665,11 +620,11 @@ const Properties = () => {
                 key={item.step}
                 className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md relative overflow-hidden group hover:shadow-xl transition"
               >
-                <div className="absolute -right-4 -top-4 w-16 h-16 bg-blue-100 dark:bg-blue-900/20 rounded-full"></div>
-                <span className="text-4xl font-bold text-blue-200 dark:text-blue-800/30 mb-4 block">
+                <div className="absolute -right-4 -top-4 w-16 h-16 bg-secondary-100 dark:bg-secondary-900/20 rounded-full"></div>
+                <span className="text-4xl font-bold text-secondary-200 dark:text-secondary-800/30 mb-4 block">
                   #{item.step}
                 </span>
-                <h3 className="text-xl font-bold mb-2 dark:text-white group-hover:text-blue-600 transition">
+                <h3 className="text-xl font-bold mb-2 dark:text-white group-hover:text-secondary-600 transition">
                   {item.title}
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm">
@@ -687,7 +642,7 @@ const Properties = () => {
         >
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="lg:w-1/2">
-              <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-full mb-4 inline-block">
+              <span className="text-secondary-600 dark:text-secondary-400 font-semibold text-sm uppercase tracking-wider bg-secondary-50 dark:bg-secondary-900/30 px-4 py-2 rounded-full mb-4 inline-block">
                 🔑 Property Management
               </span>
               <h2 className="text-3xl md:text-4xl font-bold mb-4 dark:text-white">
@@ -719,7 +674,7 @@ const Properties = () => {
               </ul>
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition"
+                className="inline-flex items-center gap-2 bg-secondary-600 text-white px-6 py-3 rounded-xl hover:bg-secondary-700 transition"
               >
                 Get Management Quote
                 <FiArrowRight />

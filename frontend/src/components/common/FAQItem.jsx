@@ -10,13 +10,13 @@ const FAQItem = ({ question, answer }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group"
       >
-        <span className="font-semibold text-gray-900 dark:text-white pr-8 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+        <span className="font-semibold text-gray-900 dark:text-white pr-8 group-hover:text-secondary-600 dark:group-hover:text-secondary-400 transition-colors">
           {question}
         </span>
         {isOpen ? (
-          <FiChevronUp className="text-xl text-blue-500 shrink-0" />
+          <FiChevronUp className="text-xl text-secondary-500 shrink-0" />
         ) : (
-          <FiChevronDown className="text-xl text-gray-500 shrink-0 group-hover:text-blue-500 transition-colors" />
+          <FiChevronDown className="text-xl text-gray-500 shrink-0 group-hover:text-secondary-500 transition-colors" />
         )}
       </button>
       
