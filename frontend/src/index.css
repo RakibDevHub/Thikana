@@ -14,29 +14,29 @@
    CUSTOM COLOR THEME
 ========================= */
 @theme {
-  /* Primary Colors - Blue (Trust & Professional) */
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
-  --color-primary-800: #1e40af;
-  --color-primary-900: #1e3a8a;
+  /* Primary Colors - Gold (Premium Accent) */
+  --color-primary-50: #fefce8;
+  --color-primary-100: #fef9c3;
+  --color-primary-200: #fef08a;
+  --color-primary-300: #fde047;
+  --color-primary-400: #facc15;
+  --color-primary-500: #eab308;
+  --color-primary-600: #ca8a04;
+  --color-primary-700: #a16207;
+  --color-primary-800: #854d0e;
+  --color-primary-900: #713f12;
 
-  /* Secondary Colors - Gold (Premium Accent) */
-  --color-secondary-50: #fefce8;
-  --color-secondary-100: #fef9c3;
-  --color-secondary-200: #fef08a;
-  --color-secondary-300: #fde047;
-  --color-secondary-400: #facc15;
-  --color-secondary-500: #eab308;
-  --color-secondary-600: #ca8a04;
-  --color-secondary-700: #a16207;
-  --color-secondary-800: #854d0e;
-  --color-secondary-900: #713f12;
+  /* Secondary Colors - Blue (Trust & Professional) */
+  --color-secondary-50: #eff6ff;
+  --color-secondary-100: #dbeafe;
+  --color-secondary-200: #bfdbfe;
+  --color-secondary-300: #93c5fd;
+  --color-secondary-400: #60a5fa;
+  --color-secondary-500: #3b82f6;
+  --color-secondary-600: #2563eb;
+  --color-secondary-700: #1d4ed8;
+  --color-secondary-800: #1e40af;
+  --color-secondary-900: #1e3a8a;
 
   /* Semantic Colors */
   --color-success: #10b981;
@@ -222,3 +222,4 @@
 .dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
   background: #6b7280;
 }
+
