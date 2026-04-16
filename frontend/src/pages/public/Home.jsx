@@ -438,7 +438,7 @@ const Home = () => {
                   </p>
                 </div>
 
-                <div className="absolute -bottom-8 -right-8 text-8xl font-bold text-gray-100 dark:text-gray-600 opacity-30 group-hover:opacity-40 transition-opacity">
+                <div className="absolute -bottom-4 -right-4 text-8xl font-bold text-gray-100 dark:text-gray-600 opacity-30 group-hover:opacity-40 transition-opacity">
                   {(index + 1).toString().padStart(2, "0")}
                 </div>
               </div>
