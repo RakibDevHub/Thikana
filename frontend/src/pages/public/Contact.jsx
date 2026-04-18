@@ -111,10 +111,10 @@ const Contact = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Header */}
-      <section className="bg-linear-to-r from-blue-600 to-blue-800 text-white py-20">
+      <section className="bg-linear-to-r from-secondary-600 to-secondary-800 text-white py-20">
         <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Contact Us</h1>
-          <p className="text-xl text-blue-100 max-w-2xl">
+          <p className="text-xl text-secondary-100 max-w-2xl">
             Have questions? We'd love to hear from you. Send us a message and
             we'll respond as soon as possible.
           </p>
@@ -154,7 +154,7 @@ const Contact = () => {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                      className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-secondary-500 transition"
                       placeholder="John Doe"
                     />
                   </div>
@@ -170,7 +170,7 @@ const Contact = () => {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                        className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-secondary-500 transition"
                         placeholder="john@example.com"
                       />
                     </div>
@@ -183,7 +183,7 @@ const Contact = () => {
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                        className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-secondary-500 transition"
                         placeholder="(555) 123-4567"
                       />
                     </div>
@@ -199,7 +199,7 @@ const Contact = () => {
                       onChange={handleChange}
                       required
                       rows="5"
-                      className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition resize-none"
+                      className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-secondary-500 transition resize-none"
                       placeholder="Tell us how we can help you..."
                     />
                   </div>
@@ -207,7 +207,7 @@ const Contact = () => {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-linear-to-r from-blue-600 to-blue-700 text-white py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-[1.02] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-linear-to-r from-secondary-600 to-secondary-700 text-white py-3 rounded-xl font-semibold hover:from-secondary-700 hover:to-secondary-800 transition-all duration-300 transform hover:scale-[1.02] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? (
                       <>Sending...</>
@@ -226,8 +226,8 @@ const Contact = () => {
               {/* Quick Contact Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition">
-                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-4">
-                    <FiPhone className="text-2xl text-blue-600" />
+                  <div className="w-12 h-12 bg-secondary-100 dark:bg-secondary-900/30 rounded-xl flex items-center justify-center mb-4">
+                    <FiPhone className="text-2xl text-secondary-600" />
                   </div>
                   <h3 className="font-semibold mb-2 dark:text-white">
                     Call Us
@@ -237,15 +237,15 @@ const Contact = () => {
                   </p>
                   <a
                     href="tel:+15551234567"
-                    className="text-blue-600 font-semibold hover:underline"
+                    className="text-secondary-600 font-semibold hover:underline"
                   >
                     {company.phone || "+1 (555) 123-4567"}
                   </a>
                 </div>
 
                 <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition">
-                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-4">
-                    <FiMail className="text-2xl text-blue-600" />
+                  <div className="w-12 h-12 bg-secondary-100 dark:bg-secondary-900/30 rounded-xl flex items-center justify-center mb-4">
+                    <FiMail className="text-2xl text-secondary-600" />
                   </div>
                   <h3 className="font-semibold mb-2 dark:text-white">
                     Email Us
@@ -255,7 +255,7 @@ const Contact = () => {
                   </p>
                   <a
                     href="mailto:info@thikana.com"
-                    className="text-blue-600 font-semibold hover:underline"
+                    className="text-secondary-600 font-semibold hover:underline"
                   >
                     {company.email || "info@thikana.com"}
                   </a>
@@ -268,7 +268,7 @@ const Contact = () => {
                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8"
               >
                 <div className="flex items-center gap-3 mb-6">
-                  <FiClock className="text-2xl text-blue-600" />
+                  <FiClock className="text-2xl text-secondary-600" />
                   <h2 className="text-xl font-bold dark:text-white">
                     Business Hours
                   </h2>
@@ -298,8 +298,8 @@ const Contact = () => {
                   )}
                 </div>
 
-                <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
-                  <p className="text-sm text-blue-600 dark:text-blue-400">
+                <div className="mt-6 p-4 bg-secondary-50 dark:bg-secondary-900/20 rounded-xl">
+                  <p className="text-sm text-secondary-600 dark:text-secondary-400">
                     <span className="font-bold">24/7 Support:</span> For
                     emergencies, call our hotline anytime.
                   </p>
@@ -317,7 +317,7 @@ const Contact = () => {
             <div className="p-6 border-b border-gray-200 dark:border-gray-700">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <h2 className="text-2xl font-bold dark:text-white flex items-center gap-2">
-                  <FiMapPin className="text-primary-600" />
+                  <FiMapPin className="text-secondary-600" />
                   Our Office Locations
                 </h2>
 
@@ -335,7 +335,7 @@ const Contact = () => {
                         );
                         setSelectedOffice(office);
                       }}
-                      className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-secondary-500"
                     >
                       {offices.map((office) => (
                         <option key={office.id} value={office.id}>
@@ -377,8 +377,8 @@ const Contact = () => {
               <div className="p-6 border-t border-gray-200 dark:border-gray-700">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
-                      <FiMapPin className="text-primary-600" />
+                    <div className="w-10 h-10 bg-secondary-100 dark:bg-secondary-900/30 rounded-full flex items-center justify-center">
+                      <FiMapPin className="text-secondary-600" />
                     </div>
                     <div>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -390,8 +390,8 @@ const Contact = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
-                      <FiPhone className="text-primary-600" />
+                    <div className="w-10 h-10 bg-secondary-100 dark:bg-secondary-900/30 rounded-full flex items-center justify-center">
+                      <FiPhone className="text-secondary-600" />
                     </div>
                     <div>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -399,15 +399,15 @@ const Contact = () => {
                       </p>
                       <a
                         href={`tel:${selectedOffice.phone}`}
-                        className="text-sm font-medium text-primary-600 hover:underline"
+                        className="text-sm font-medium text-secondary-600 hover:underline"
                       >
                         {selectedOffice.phone}
                       </a>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
-                      <FiMail className="text-primary-600" />
+                    <div className="w-10 h-10 bg-secondary-100 dark:bg-secondary-900/30 rounded-full flex items-center justify-center">
+                      <FiMail className="text-secondary-600" />
                     </div>
                     <div>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -415,15 +415,15 @@ const Contact = () => {
                       </p>
                       <a
                         href={`mailto:${selectedOffice.email}`}
-                        className="text-sm font-medium text-primary-600 hover:underline"
+                        className="text-sm font-medium text-secondary-600 hover:underline"
                       >
                         {selectedOffice.email}
                       </a>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
-                      <FiClock className="text-primary-600" />
+                    <div className="w-10 h-10 bg-secondary-100 dark:bg-secondary-900/30 rounded-full flex items-center justify-center">
+                      <FiClock className="text-secondary-600" />
                     </div>
                     <div>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -444,19 +444,19 @@ const Contact = () => {
       {/* 24/7 Support Section */}
       <section
         id="support"
-        className="py-16 bg-linear-to-r from-blue-600 to-blue-800 text-white"
+        className="py-16 bg-linear-to-r from-secondary-600 to-secondary-800 text-white"
       >
         <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             24/7 Customer Support
           </h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-secondary-100 mb-8 max-w-2xl mx-auto">
             Need help right now? Our support team is available around the clock.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="tel:+15551234567"
-              className="inline-flex items-center justify-center gap-2 bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105"
+              className="inline-flex items-center justify-center gap-2 bg-white text-secondary-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105"
             >
               <FiPhone className="text-xl" /> Call Us Now
             </a>
@@ -469,7 +469,7 @@ const Contact = () => {
               <FaWhatsapp className="text-xl" /> WhatsApp Chat
             </a>
           </div>
-          <p className="text-sm text-blue-200 mt-4">
+          <p className="text-sm text-secondary-200 mt-4">
             Quick response via WhatsApp within minutes
           </p>
         </div>
@@ -496,7 +496,7 @@ const Contact = () => {
                   href={link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-blue-600 hover:text-white transition-all duration-300 transform hover:scale-110"
+                  className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-secondary-600 hover:text-white transition-all duration-300 transform hover:scale-110"
                   aria-label={social.label}
                 >
                   {social.icon}
