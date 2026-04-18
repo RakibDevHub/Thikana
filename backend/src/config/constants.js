@@ -8,6 +8,31 @@ export const SITE_CONFIG = {
     website: process.env.COMPANY_WEBSITE || "www.thikana.com",
   },
 
+  offices: [
+    {
+      id: 1,
+      city: "Dhaka",
+      address: "123 Gulshan Avenue, Dhaka 1212",
+      phone: "+880 1712 345678",
+      email: "dhaka@thikana.com",
+      hours: "Mon-Fri: 9AM-7PM, Sat: 10AM-4PM",
+      image: null,
+      isHeadquarters: true,
+      location: { lat: 23.8103, lng: 90.4125 },
+    },
+    {
+      id: 2,
+      city: "Chittagong",
+      address: "456 Agrabad Commercial Area, Chattogram",
+      phone: "+880 1812 345678",
+      email: "ctg@thikana.com",
+      hours: "Mon-Fri: 9AM-6PM, Sat: 9AM-2PM",
+      image: null,
+      isHeadquarters: false,
+      location: { lat: 22.3569, lng: 91.7832 },
+    },
+  ],
+
   // BUSINESS HOURS
   businessHours: [
     { day: "Monday - Friday", hours: "9:00 AM - 7:00 PM" },

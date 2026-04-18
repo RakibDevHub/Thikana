@@ -8,23 +8,25 @@ import {
   FiClock,
   FiSend,
   FiCheckCircle,
-  FiFacebook,
-  FiTwitter,
-  FiInstagram,
-  FiLinkedin,
-  FiMessageSquare,
 } from "react-icons/fi";
-import { FaFacebookF, FaInstagram, FaLinkedin, FaTwitter, FaWhatsapp } from "react-icons/fa";
-import useSettings from "../../hooks/useSettings";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaLinkedin,
+  FaTwitter,
+  FaWhatsapp,
+} from "react-icons/fa";
+import useSiteConfig from "../../hooks/useSiteConfig";
 
 const Contact = () => {
   const location = useLocation();
-  const { settings } = useSettings();
+  const { config } = useSiteConfig();
+  const [selectedOffice, setSelectedOffice] = useState(null);
 
-  const company = settings?.company || {};
-  const offices = settings?.offices || [];
-  const businessHours = settings?.businessHours || [];
-  const socialMedia = company.socialMedia || {};
+  const company = config?.company || {};
+  const offices = config?.offices || [];
+  const businessHours = config?.businessHours || [];
+  const socialMedia = config?.socialMedia || {};
 
   // SOCIAL LINK
   const socialLinks = [
@@ -41,6 +43,14 @@ const Contact = () => {
       }, 500);
     }
   }, [location]);
+
+  // Set default selected office (headquarters or first office)
+  useEffect(() => {
+    if (offices.length > 0) {
+      const headquarters = offices.find((office) => office.isHeadquarters);
+      setSelectedOffice(headquarters || offices[0]);
+    }
+  }, [offices]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -266,9 +276,9 @@ const Contact = () => {
 
                 <div className="space-y-3">
                   {businessHours.length > 0 ? (
-                    businessHours.map((hour) => (
+                    businessHours.map((hour, index) => (
                       <div
-                        key={hour.id}
+                        key={index}
                         className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700 last:border-0"
                       >
                         <span className="text-gray-600 dark:text-gray-400">
@@ -282,28 +292,7 @@ const Contact = () => {
                   ) : (
                     <>
                       <div className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                        <span className="text-gray-600 dark:text-gray-400">
-                          Monday - Friday
-                        </span>
-                        <span className="font-semibold dark:text-white">
-                          9:00 AM - 7:00 PM
-                        </span>
-                      </div>
-                      <div className="flex justify-between py-2 border-b border-gray-200 dark:border-gray-700">
-                        <span className="text-gray-600 dark:text-gray-400">
-                          Saturday
-                        </span>
-                        <span className="font-semibold dark:text-white">
-                          10:00 AM - 4:00 PM
-                        </span>
-                      </div>
-                      <div className="flex justify-between py-2">
-                        <span className="text-gray-600 dark:text-gray-400">
-                          Sunday
-                        </span>
-                        <span className="font-semibold dark:text-white">
-                          Closed
-                        </span>
+                        <span>Not Available</span>
                       </div>
                     </>
                   )}
@@ -321,77 +310,133 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* Our Offices Section */}
-      <section id="offices" className="py-16 bg-white dark:bg-gray-800">
+      {/* Map Section - Interactive with Select Dropdown */}
+      <section id="map" className="py-16 bg-gray-50 dark:bg-gray-900">
         <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm uppercase tracking-wider bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-full">
-              📍 Our Locations
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold mt-4 mb-4 dark:text-white">
-              Visit Our Offices
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400">
-              We have offices in major cities to serve you better
-            </p>
-          </div>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <h2 className="text-2xl font-bold dark:text-white flex items-center gap-2">
+                  <FiMapPin className="text-primary-600" />
+                  Our Office Locations
+                </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {offices.map((office, index) => (
-              <div
-                key={index}
-                className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-8 hover:shadow-xl transition-all duration-300 group"
-              >
-                <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <FiMapPin className="text-2xl text-blue-600" />
+                {/* Office Selector Dropdown */}
+                {offices.length > 0 && (
+                  <div className="flex items-center gap-3">
+                    <label className="text-sm text-gray-600 dark:text-gray-400">
+                      Select Office:
+                    </label>
+                    <select
+                      value={selectedOffice?.id || ""}
+                      onChange={(e) => {
+                        const office = offices.find(
+                          (o) => o.id === parseInt(e.target.value),
+                        );
+                        setSelectedOffice(office);
+                      }}
+                      className="px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    >
+                      {offices.map((office) => (
+                        <option key={office.id} value={office.id}>
+                          {office.city} {office.isHeadquarters ? "(HQ)" : ""}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Map Display */}
+            <div className="aspect-video bg-gray-200 dark:bg-gray-700">
+              {selectedOffice?.location?.lat &&
+              selectedOffice?.location?.lng ? (
+                <iframe
+                  title="Office Location Map"
+                  src={`https://maps.google.com/maps?q=${selectedOffice.location.lat},${selectedOffice.location.lng}&z=15&output=embed`}
+                  className="w-full h-full"
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <div className="text-center">
+                    <FiMapPin className="text-4xl text-gray-400 mx-auto mb-2" />
+                    <p className="text-gray-500 dark:text-gray-400">
+                      Select an office to view location on map
+                    </p>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold mb-2 dark:text-white">
-                  {office.city}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
-                  {office.address}
-                </p>
-                <div className="space-y-2 mb-4">
-                  <a
-                    href={`tel:${office.phone}`}
-                    className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 transition"
-                  >
-                    <FiPhone className="text-xs" /> {office.phone}
-                  </a>
-                  <a
-                    href={`mailto:${office.email}`}
-                    className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 transition"
-                  >
-                    <FiMail className="text-xs" /> {office.email}
-                  </a>
-                  <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                    <FiClock className="text-xs" /> {office.hours}
+              )}
+            </div>
+
+            {/* Office Info Below Map */}
+            {selectedOffice && (
+              <div className="p-6 border-t border-gray-200 dark:border-gray-700">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                      <FiMapPin className="text-primary-600" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        Address
+                      </p>
+                      <p className="text-sm font-medium dark:text-white">
+                        {selectedOffice.address}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                      <FiPhone className="text-primary-600" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        Phone
+                      </p>
+                      <a
+                        href={`tel:${selectedOffice.phone}`}
+                        className="text-sm font-medium text-primary-600 hover:underline"
+                      >
+                        {selectedOffice.phone}
+                      </a>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                      <FiMail className="text-primary-600" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        Email
+                      </p>
+                      <a
+                        href={`mailto:${selectedOffice.email}`}
+                        className="text-sm font-medium text-primary-600 hover:underline"
+                      >
+                        {selectedOffice.email}
+                      </a>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                      <FiClock className="text-primary-600" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        Hours
+                      </p>
+                      <p className="text-sm font-medium dark:text-white">
+                        {selectedOffice.hours}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Map Section - Placeholder */}
-      <section id="map" className="py-16 bg-gray-50 dark:bg-gray-900">
-        <div className="container max-w-360 mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold mb-6 dark:text-white">
-              Our Location
-            </h2>
-            <div className="aspect-video bg-gray-200 dark:bg-gray-700 rounded-xl flex items-center justify-center">
-              <div className="text-center">
-                <FiMapPin className="text-4xl text-gray-400 mx-auto mb-2" />
-                <p className="text-gray-500 dark:text-gray-400">
-                  Map integration coming soon
-                </p>
-                <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">
-                  Headquarters: 123 Real Estate Avenue, New York, NY 10001
-                </p>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
